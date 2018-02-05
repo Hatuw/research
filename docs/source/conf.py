@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Research Notes documentation build configuration file, created by
-# sphinx-quickstart on Mon Feb  5 11:16:37 2018.
+# sphinx-quickstart on Mon Feb  5 14:50:16 2018.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -39,7 +39,7 @@ templates_path = ['_templates']
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = '.txt'
+source_suffix = '.rst'
 
 # The master toctree document.
 master_doc = 'index'
@@ -72,6 +72,7 @@ exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
+
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
