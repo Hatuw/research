@@ -36,8 +36,8 @@
               href="../genindex.html"/>
         <link rel="search" title="搜索" href="../search.html"/>
     <link rel="top" title="Research Notes 0.1 文档" href="../index.html"/>
-        <link rel="next" title="BMVC 2018 Notes" href="../bmvc2018/index.html"/>
-        <link rel="prev" title="Welcome to Research Notes’s documentation!" href="../index.html"/> 
+        <link rel="next" title="Cryptology Research" href="../cryptology/index.html"/>
+        <link rel="prev" title="Research Notes" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,15 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">BlockChain Research</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BlockChain Research</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ai-blockchain">AI × BlockChain</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#openmind">OpenMind</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numberai">NumberAI</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptology/index.html">Cryptology Research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bmvc2018/index.html">BMVC 2018 Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../icassp2018/index.html">ICASSP 2018 Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../icpr2018/index.html">ICPR 2018 Notes</a></li>
@@ -161,6 +169,35 @@
             
   <div class="section" id="blockchain-research">
 <h1>BlockChain Research<a class="headerlink" href="#blockchain-research" title="永久链接至标题">¶</a></h1>
+<div class="section" id="ai-blockchain">
+<h2>AI × BlockChain<a class="headerlink" href="#ai-blockchain" title="永久链接至标题">¶</a></h2>
+<p>目前AI+BlockChain的一个应用为解决深度学习中数据供求的矛盾:</p>
+<div class="section" id="openmind">
+<h3>OpenMind<a class="headerlink" href="#openmind" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><ul>
+<li><p class="first">数据提供者：</p>
+<blockquote>
+<div><p>数据提供者希望将其拥有的数据提供给有需要的人使用，但同时也想数据得到保护(通常表现在不泄露数据方面)。例如在身份证OCR场景中，即使训练一个OCR模型很有价值，但是数据提供者不可能将身份证数据公之于众。</p>
+</div></blockquote>
+</li>
+<li><p class="first">数据使用者：</p>
+<blockquote>
+<div><p>为了消除数据提供者的疑虑，数据使用者可能会将模型上传到数据提供者，让数据提供者对其模型进行训练。但这样的话数据使用者所设计的模型就有可能被数据提供者窃取。</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>因此供求双方形成了矛盾。同时在这个矛盾当中不能有第三方的介入，因为第三方也是不可信的，若第三方作恶，即可同时窃取模型和数据。</p>
+<p>使用区块链技术可以”有效”解决这个问题(方案可行，但未得到时间认证)。OpenMind的解决方法就是：数据使用者购买数据，用数据训练完模型之后，只拿走模型，不碰数据。</p>
+</div>
+<div class="section" id="numberai">
+<h3>NumberAI<a class="headerlink" href="#numberai" title="永久链接至标题">¶</a></h3>
+<p><cite>去中心化AI对冲基金</cite></p>
+<p>NumberAI能够提供所有股市的免费数据，数据使用者能够用这些数据对模型进行训练，把预测结果交给NumberAI。</p>
+<p>经过时间的检验，就知道那个模型的预测结果是最准确的，那么预测结果更准确的模型的拥有者就会得到奖励，同时也不会泄露模型。(有点像赌博，我提供免费的数据给你们用，你们猜明天的股市是涨还是跌，具体怎么猜我就不管，猜中了就有奖励)</p>
+</div>
+</div>
 </div>
 
 
@@ -173,10 +210,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../bmvc2018/index.html" class="btn btn-neutral float-right" title="BMVC 2018 Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cryptology/index.html" class="btn btn-neutral float-right" title="Cryptology Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="Welcome to Research Notes’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral" title="Research Notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

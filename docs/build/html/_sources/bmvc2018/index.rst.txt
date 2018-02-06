@@ -4,9 +4,10 @@ BMVC 2018 Notes
 Introduction
 >>>>>>>>>>>>>>>>>>>
 
- - BMVC 为CCF C类会议
+- BMVC 为CCF C类会议
 
  The British Machine Vision Conference (BMVC) is the British Machine Vision Association (BMVA) annual conference on machine vision, image processing, and pattern recognition. It is one of the major international conferences on computer vision and related areas held in the UK. As its increasing popularity and quality, it has established as a prestigious event on the vision calendar.
+
  --- Offical Website(http://bmvc2018.org)
 
 
