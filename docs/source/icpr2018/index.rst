@@ -5,7 +5,10 @@ ICPR 2018 Notes
  International Conference on Pattern Recognition (ICPR) will be an international forum for discussions on recent advances in the fields of Pattern Recognition, Machine Learning and Computer Vision, and on applications of these technologies in various fields. --- Offical Website(http://www.icpr2018.org/)
 
 
-- Important Date:
+Important Date
+>>>>>>>>>>>>>>>>>>>
+
+ `DDL已过`
 
 +--------------------------+------------------------------+
 |Submission Open           |      November 5, 2017        |

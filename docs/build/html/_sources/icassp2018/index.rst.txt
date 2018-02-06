@@ -4,7 +4,10 @@ ICASSP 2018 Notes
 
  IEEE International Conference on Acoustics, Speech and Signal Processing --- Offical Website(https://2018.ieeeicassp.org/)
 
-- Important Date:
+Important Date
+>>>>>>>>>>>>>>>>>>>
+
+ `DDL已过`
 
 +------------------------------------+----------------------------------------+
 |Special Session Proposals Due       |             August 04, 2017            |
