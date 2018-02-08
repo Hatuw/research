@@ -7,10 +7,11 @@ Research Notes
 ==========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
    :glob:
 
+   competitions/index
    blockchain/index
    cryptology/index
    bmvc2018/index
