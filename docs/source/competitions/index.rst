@@ -20,7 +20,7 @@ You can click here_ to go to the Kaggle competition's offical website. 以下只
 
  |speed-cures|
 
- .. |speed-cures| image:: ..\\assets\\speed-cures.jpg
+ .. |speed-cures| image:: ../assets/speed-cures.jpg
 
 
 网上商品定价
