@@ -74,3 +74,8 @@ ImageNet
 >>>>>>>>>>>>>>>>>>>
  
  这个就不多说了，ImageNet现在搬到了Kaggle上面。要想短时间内做出比较好的Performance是不可能吧..详情在 `这里 <https://www.kaggle.com/c/imagenet-object-detection-challenge>`_ 和 `这里 <https://www.kaggle.com/c/imagenet-object-localization-challenge>`_
+
+Others
+-------------------
+
+另外看了一下CVPR和NIPS的一些Challenges.已经过了
