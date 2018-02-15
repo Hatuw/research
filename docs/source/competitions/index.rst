@@ -26,7 +26,7 @@ You can click here_ to go to the Kaggle competition's offical website. 以下只
 网上商品定价
 >>>>>>>>>>>>>>>>>>>
 
- `Can you automatically suggest product prices to online sellers?` (14 days to go)
+ `Can you automatically suggest product prices to online sellers?` (7 days to go)
 
  目标是要做一个模型对网上售卖的商品进行定价。
 
@@ -45,20 +45,10 @@ You can click here_ to go to the Kaggle competition's offical website. 以下只
  提高现有的一些模型的效果，识别和分类垃圾评论。纯NLP问题，这个不好做吧..详情可以看 `这里 <https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge>`_
 
 
-摄像机确定？
->>>>>>>>>>>>>>>>>>>
-
- `Identify from which camera an image was taken` (15 hours to go)
-
- To build an algorithm that identifies which camera model captured an image by using traces intrinsically left in the image.
-
- 题目的大概意思就是建立一个模型来识别是哪个摄像机捕获的图像，属于信号处理领域的。不过比赛时间快过了..详情可以看 `这里 <https://www.kaggle.com/c/sp-society-camera-model-identification>`_
-
-
 半导体材料性质
 >>>>>>>>>>>>>>>>>>>
 
- `Predict the key properties of novel transparent semiconductors` (8 days to go)
+ `Predict the key properties of novel transparent semiconductors` (21hours to go)
 
  em...这个算了，详情在 `这里 <https://www.kaggle.com/c/nomad2018-predict-transparent-conductors>`_
 
