@@ -93,16 +93,10 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Competitions Notes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#kaggle">Kaggle</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">细胞核识别</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">网上商品定价</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">垃圾评论识别</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">半导体材料性质</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id9">地标检索/识别</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#imagenet">ImageNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kaggle">Kaggle 细胞核识别</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#others">Others</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../blockchain/index.html">BlockChain Research</a></li>
@@ -176,59 +170,54 @@
   <div class="section" id="competitions-notes">
 <h1>Competitions Notes<a class="headerlink" href="#competitions-notes" title="永久链接至标题">¶</a></h1>
 <div class="section" id="kaggle">
-<h2>Kaggle<a class="headerlink" href="#kaggle" title="永久链接至标题">¶</a></h2>
-<p>You can click <a class="reference external" href="https://www.kaggle.com/competitions">here</a> to go to the Kaggle competition’s offical website. 以下只介绍Active Competitions.</p>
-<div class="section" id="id1">
-<h3>细胞核识别<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h3>
+<h2>Kaggle 细胞核识别<a class="headerlink" href="#kaggle" title="永久链接至标题">¶</a></h2>
+<p><a class="reference external" href="https://www.kaggle.com/competitions">https://www.kaggle.com/competitions</a></p>
 <blockquote>
 <div><p><cite>Find the nuclei in divergent images to advance medical discovery</cite> (2 months to go)</p>
 <p>目标要创建一个自动化细胞核检测算法，加快医学研究。官方给出了一些测试集和训练集，问题可以转化为在图像中找到特定的目标？(<cite>这个是机器学习/CV在医疗方面的应用，比较感兴趣，但可能需要医学背景，待讨论</cite>)</p>
 <p><cite>关于题目更多的背景介绍可以看</cite> <a class="reference external" href="https://www.kaggle.com/c/data-science-bowl-2018#description">这里</a>。下为Poster:</p>
-<p><img alt="speed-cures" src="../_images/speed-cures.jpg" /></p>
+<p><a class="reference internal" href="../_images/speed-cures.jpg"><img alt="speed-cures" class="align-middle" src="../_images/speed-cures.jpg" style="width: 400px;" /></a></p>
 </div></blockquote>
+<div class="section" id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="永久链接至标题">¶</a></h3>
+<ul>
+<li><dl class="first docutils">
+<dt>Windows 下的Mask-RCNN编译</dt>
+<dd><ul class="first simple">
+<li><dl class="first docutils">
+<dt>Github repo:</dt>
+<dd><a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN">https://github.com/CharlesShang/FastMaskRCNN</a></dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>How-to:</dt>
+<dd><ol class="first last arabic">
+<li>Go to <code class="docutils literal"><span class="pre">./libs/datasets/pycocotools</span></code> and run <code class="docutils literal"><span class="pre">make</span></code></li>
+<li>Download COCO dataset, place it into <code class="docutils literal"><span class="pre">./data</span></code>, then run <code class="docutils literal"><span class="pre">python</span> <span class="pre">download_and_convert_data.py</span></code> to build tf-records. It takes a while.（要先解压）</li>
+<li>Download pretrained resnet50 model, <code class="docutils literal"><span class="pre">wget</span> <span class="pre">http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz</span></code>, unzip it, place it into <code class="docutils literal"><span class="pre">./data/pretrained_models/</span></code></li>
+<li>Go to <code class="docutils literal"><span class="pre">./libs</span></code> and run <code class="docutils literal"><span class="pre">make</span></code></li>
+<li>run <code class="docutils literal"><span class="pre">python</span> <span class="pre">train/train.py</span></code> for training</li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Windows平台下编译 <cite>1.</cite> 时需要先将 <code class="docutils literal"><span class="pre">FastMaskRCNN\\libs\\datasets\\pycocotools</span></code> 下的 <code class="docutils literal"><span class="pre">setpy.py</span></code> 的 <code class="docutils literal"><span class="pre">-Wno-cpp</span></code> 和 <code class="docutils literal"><span class="pre">-Wno-unused-function</span></code> 编译参数去掉（如下）</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span>
+<span class="go">    Extension(</span>
+<span class="go">    &#39;_mask&#39;,</span>
+<span class="go">        sources=[&#39;./common/maskApi.c&#39;, &#39;_mask.pyx&#39;],</span>
+<span class="go">        include_dirs = [np.get_include(), &#39;./common&#39;],</span>
+<span class="go">        extra_compile_args=[&#39;-std=c99&#39;],</span>
+<span class="go">    )</span>
+<span class="go">]</span>
+</pre></div>
 </div>
-<div class="section" id="id3">
-<h3>网上商品定价<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
-<blockquote>
-<div><p><cite>Can you automatically suggest product prices to online sellers?</cite> (7 days to go)</p>
-<p>目标是要做一个模型对网上售卖的商品进行定价。</p>
-<blockquote>
-<div>You’ll be provided user-inputted <strong>text descriptions</strong> of their products, including details <strong>like product category name, brand name, and item condition</strong>.</div></blockquote>
-<p>貌似是NLP+数据挖掘的比赛，跟CV不沾边，没有NLP的基础，不感兴趣。详情可以看 <a class="reference external" href="https://www.kaggle.com/c/mercari-price-suggestion-challenge">这里</a></p>
-</div></blockquote>
+</dd>
+</dl>
+</li>
+</ul>
 </div>
-<div class="section" id="id5">
-<h3>垃圾评论识别<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
-<blockquote>
-<div><p><cite>Identify and classify toxic online comments</cite> (a month to go)</p>
-<blockquote>
-<div>But the current models still make errors, and they don’t allow users to select which types of toxicity they’re interested in finding (e.g. some platforms may be fine with profanity, but not with other types of toxic content).</div></blockquote>
-<p>提高现有的一些模型的效果，识别和分类垃圾评论。纯NLP问题，这个不好做吧..详情可以看 <a class="reference external" href="https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge">这里</a></p>
-</div></blockquote>
-</div>
-<div class="section" id="id7">
-<h3>半导体材料性质<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
-<blockquote>
-<div><p><cite>Predict the key properties of novel transparent semiconductors</cite> (21hours to go)</p>
-<p>em…这个算了，详情在 <a class="reference external" href="https://www.kaggle.com/c/nomad2018-predict-transparent-conductors">这里</a></p>
-</div></blockquote>
-</div>
-<div class="section" id="id9">
-<h3>地标检索/识别<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
-<blockquote>
-<div><p><cite>Given an image, can you find all of the same landmarks in a dataset?</cite> (3 months to go)</p>
-<p>两个比赛，一个是检索，一个是识别。就是给一图片，要快速在大型数据库(如Google image)中找出这张图片所拍摄的是哪个地标，当然也可能没有。主要要求可能是速度上的优化，详情看 <a class="reference external" href="https://www.kaggle.com/c/landmark-retrieval-challenge">这里</a> 和 <a class="reference external" href="https://www.kaggle.com/c/landmark-recognition-challenge">这里</a></p>
-</div></blockquote>
-</div>
-<div class="section" id="imagenet">
-<h3>ImageNet<a class="headerlink" href="#imagenet" title="永久链接至标题">¶</a></h3>
-<blockquote>
-<div>这个就不多说了，ImageNet现在搬到了Kaggle上面。要想短时间内做出比较好的Performance是不可能吧..详情在 <a class="reference external" href="https://www.kaggle.com/c/imagenet-object-detection-challenge">这里</a> 和 <a class="reference external" href="https://www.kaggle.com/c/imagenet-object-localization-challenge">这里</a></div></blockquote>
-</div>
-</div>
-<div class="section" id="others">
-<h2>Others<a class="headerlink" href="#others" title="永久链接至标题">¶</a></h2>
-<p>另外看了一下CVPR和NIPS的一些Challenges.已经过了</p>
 </div>
 </div>
 
