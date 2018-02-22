@@ -94,6 +94,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Competitions Notes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#kaggle">Kaggle 细胞核识别</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
 </ul>
 </li>
@@ -171,19 +172,33 @@
 <h1>Competitions Notes<a class="headerlink" href="#competitions-notes" title="永久链接至标题">¶</a></h1>
 <div class="section" id="kaggle">
 <h2>Kaggle 细胞核识别<a class="headerlink" href="#kaggle" title="永久链接至标题">¶</a></h2>
+<div class="section" id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="永久链接至标题">¶</a></h3>
 <p><a class="reference external" href="https://www.kaggle.com/competitions">https://www.kaggle.com/competitions</a></p>
+<p><cite>Find the nuclei in divergent images to advance medical discovery</cite> (2 months to go)</p>
 <blockquote>
-<div><p><cite>Find the nuclei in divergent images to advance medical discovery</cite> (2 months to go)</p>
-<p>目标要创建一个自动化细胞核检测算法，加快医学研究。官方给出了一些测试集和训练集，问题可以转化为在图像中找到特定的目标？(<cite>这个是机器学习/CV在医疗方面的应用，比较感兴趣，但可能需要医学背景，待讨论</cite>)</p>
+<div><p>目标要创建一个自动化细胞核检测算法，加快医学研究。官方给出了一些测试集和训练集，问题可以转化为在图像中找到特定的目标？(<cite>这个是机器学习/CV在医疗方面的应用，比较感兴趣，但可能需要医学背景，待讨论</cite>)</p>
 <p><cite>关于题目更多的背景介绍可以看</cite> <a class="reference external" href="https://www.kaggle.com/c/data-science-bowl-2018#description">这里</a>。下为Poster:</p>
 <p><a class="reference internal" href="../_images/speed-cures.jpg"><img alt="speed-cures" class="align-middle" src="../_images/speed-cures.jpg" style="width: 400px;" /></a></p>
 </div></blockquote>
+</div>
 <div class="section" id="notes">
 <h3>Notes<a class="headerlink" href="#notes" title="永久链接至标题">¶</a></h3>
 <ul>
-<li><dl class="first docutils">
-<dt>Windows 下的Mask-RCNN编译</dt>
-<dd><ul class="first simple">
+<li><p class="first">U-Net</p>
+<blockquote>
+<div><p><a class="reference external" href="https://arxiv.org/pdf/1505.04597.pdf">U-Net: Convolutional Networks for Biomedical Image Segmentation</a></p>
+<p><a class="reference internal" href="../_images/U-Net.png"><img alt="U-Net" class="align-middle" src="../_images/U-Net.png" style="width: 400px;" /></a></p>
+<p>一个做医学图像分割的网络，数据集是International Symposium on Biomedical Imaging (ISBI)的 workshop 比赛。Kaggle上有个Kernel实现这个U-Net：</p>
+<blockquote>
+<div><p><a class="reference external" href="https://www.kaggle.com/keegil/keras-u-net-starter-lb-0-277">https://www.kaggle.com/keegil/keras-u-net-starter-lb-0-277</a></p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p class="first">Windows 下的Mask-RCNN编译</p>
+<blockquote>
+<div><p><a class="reference internal" href="../_images/mask-rcnn.png"><img alt="mask-rcnn" class="align-middle" src="../_images/mask-rcnn.png" style="width: 400px;" /></a></p>
+<ul class="simple">
 <li><dl class="first docutils">
 <dt>Github repo:</dt>
 <dd><a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN">https://github.com/CharlesShang/FastMaskRCNN</a></dd>
@@ -203,18 +218,38 @@
 </li>
 </ul>
 <p>Windows平台下编译 <cite>1.</cite> 时需要先将 <code class="docutils literal"><span class="pre">FastMaskRCNN\\libs\\datasets\\pycocotools</span></code> 下的 <code class="docutils literal"><span class="pre">setpy.py</span></code> 的 <code class="docutils literal"><span class="pre">-Wno-cpp</span></code> 和 <code class="docutils literal"><span class="pre">-Wno-unused-function</span></code> 编译参数去掉（如下）</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span>
-<span class="go">    Extension(</span>
-<span class="go">    &#39;_mask&#39;,</span>
-<span class="go">        sources=[&#39;./common/maskApi.c&#39;, &#39;_mask.pyx&#39;],</span>
-<span class="go">        include_dirs = [np.get_include(), &#39;./common&#39;],</span>
-<span class="go">        extra_compile_args=[&#39;-std=c99&#39;],</span>
-<span class="go">    )</span>
-<span class="go">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Extension</span><span class="p">(</span>
+    <span class="s1">&#39;_mask&#39;</span><span class="p">,</span>
+        <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;./common/maskApi.c&#39;</span><span class="p">,</span> <span class="s1">&#39;_mask.pyx&#39;</span><span class="p">],</span>
+        <span class="n">include_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">get_include</span><span class="p">(),</span> <span class="s1">&#39;./common&#39;</span><span class="p">],</span>
+        <span class="n">extra_compile_args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-std=c99&#39;</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">]</span>
 </pre></div>
 </div>
-</dd>
-</dl>
+<p>另外，运行 <code class="docutils literal"><span class="pre">python</span> <span class="pre">download_and_convert_data.py</span></code> 时可能会遇到以下报错：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Gray</span> <span class="n">Image</span> <span class="mi">287422</span>
+<span class="o">&gt;&gt;</span> <span class="n">Converting</span> <span class="n">image</span> <span class="mi">23701</span><span class="o">/</span><span class="mi">82783</span> <span class="n">shard</span> <span class="mi">9</span>
+<span class="o">&gt;&gt;</span> <span class="n">Converting</span> <span class="n">image</span> <span class="mi">23751</span><span class="o">/</span><span class="mi">82783</span> <span class="n">shard</span> <span class="mi">9</span>
+<span class="o">&gt;&gt;</span> <span class="n">Converting</span> <span class="n">image</span> <span class="mi">23801</span><span class="o">/</span><span class="mi">82783</span> <span class="n">shard</span> <span class="mi">9</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;download_and_convert_data.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">39</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+  <span class="n">File</span> <span class="s2">&quot;D:\Python\Python35\lib\site-packages</span><span class="se">\t</span><span class="s2">ensorflow\python\platform</span><span class="se">\a</span><span class="s2">pp.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">48</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run</span>
+    <span class="n">_sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">_sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">flags_passthrough</span><span class="p">))</span>
+  <span class="n">File</span> <span class="s2">&quot;download_and_convert_data.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">33</span><span class="p">,</span> <span class="ow">in</span> <span class="n">main</span>
+    <span class="n">download_and_convert_coco</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">FLAGS</span><span class="o">.</span><span class="n">dataset_dir</span><span class="p">,</span> <span class="n">FLAGS</span><span class="o">.</span><span class="n">dataset_split_name</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;E:</span><span class="se">\r</span><span class="s2">esearch\poc\FastMaskRCNN\libs\datasets\download_and_convert_coco.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">457</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run</span>
+    <span class="n">dataset_split_name</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;E:</span><span class="se">\r</span><span class="s2">esearch\poc\FastMaskRCNN\libs\datasets\download_and_convert_coco.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">303</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_add_to_tfrecord</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="ne">TypeError</span><span class="p">:</span> <span class="nb">int</span><span class="p">()</span> <span class="n">argument</span> <span class="n">must</span> <span class="n">be</span> <span class="n">a</span> <span class="n">string</span><span class="p">,</span> <span class="n">a</span> <span class="nb">bytes</span><span class="o">-</span><span class="n">like</span> <span class="nb">object</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">number</span><span class="p">,</span> <span class="ow">not</span> <span class="s1">&#39;JpegImageFile&#39;</span>
+</pre></div>
+</div>
+<p>关于这个Issue可以看这里：<a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN/issues/33">https://github.com/CharlesShang/FastMaskRCNN/issues/33</a>, 其中一个解决方法就是将 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name))</span></code> 改成 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name),</span> <span class="pre">dtype=np.uint8)</span></code></p>
+<p><cite>(不知道有没有用，程序还在跑⊙﹏⊙)</cite></p>
+</div></blockquote>
 </li>
 </ul>
 </div>
