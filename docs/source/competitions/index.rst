@@ -47,7 +47,10 @@ Notes
         :align: middle
 
     - Github repo:
-        https://github.com/CharlesShang/FastMaskRCNN
+        1) https://github.com/CharlesShang/FastMaskRCNN
+        2) https://github.com/matterport/Mask_RCNN
+        
+        (第一个repo在windows下跑不通..)
 
     - How-to:
         1) Go to ``./libs/datasets/pycocotools`` and run ``make``
@@ -89,5 +92,4 @@ Notes
         TypeError: int() argument must be a string, a bytes-like object or a number, not 'JpegImageFile'
 
     关于这个Issue可以看这里：https://github.com/CharlesShang/FastMaskRCNN/issues/33, 其中一个解决方法就是将 ``[296]: img = np.array(Image.open(img_name))`` 改成 ``[296]: img = np.array(Image.open(img_name), dtype=np.uint8)`` 
-
-    `(不知道有没有用，程序还在跑⊙﹏⊙)`
+    （貌似是数据集的问题，还是解决不了⊙﹏⊙，换个repo试试）

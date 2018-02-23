@@ -198,15 +198,20 @@
 <li><p class="first">Windows 下的Mask-RCNN编译</p>
 <blockquote>
 <div><p><a class="reference internal" href="../_images/mask-rcnn.png"><img alt="mask-rcnn" class="align-middle" src="../_images/mask-rcnn.png" style="width: 400px;" /></a></p>
-<ul class="simple">
+<ul>
 <li><dl class="first docutils">
 <dt>Github repo:</dt>
-<dd><a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN">https://github.com/CharlesShang/FastMaskRCNN</a></dd>
+<dd><ol class="first arabic simple">
+<li><a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN">https://github.com/CharlesShang/FastMaskRCNN</a></li>
+<li><a class="reference external" href="https://github.com/matterport/Mask_RCNN">https://github.com/matterport/Mask_RCNN</a></li>
+</ol>
+<p class="last">(第一个repo在windows下跑不通..)</p>
+</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt>How-to:</dt>
-<dd><ol class="first last arabic">
+<dd><ol class="first last arabic simple">
 <li>Go to <code class="docutils literal"><span class="pre">./libs/datasets/pycocotools</span></code> and run <code class="docutils literal"><span class="pre">make</span></code></li>
 <li>Download COCO dataset, place it into <code class="docutils literal"><span class="pre">./data</span></code>, then run <code class="docutils literal"><span class="pre">python</span> <span class="pre">download_and_convert_data.py</span></code> to build tf-records. It takes a while.（要先解压）</li>
 <li>Download pretrained resnet50 model, <code class="docutils literal"><span class="pre">wget</span> <span class="pre">http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz</span></code>, unzip it, place it into <code class="docutils literal"><span class="pre">./data/pretrained_models/</span></code></li>
@@ -247,8 +252,8 @@
 <span class="ne">TypeError</span><span class="p">:</span> <span class="nb">int</span><span class="p">()</span> <span class="n">argument</span> <span class="n">must</span> <span class="n">be</span> <span class="n">a</span> <span class="n">string</span><span class="p">,</span> <span class="n">a</span> <span class="nb">bytes</span><span class="o">-</span><span class="n">like</span> <span class="nb">object</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">number</span><span class="p">,</span> <span class="ow">not</span> <span class="s1">&#39;JpegImageFile&#39;</span>
 </pre></div>
 </div>
-<p>关于这个Issue可以看这里：<a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN/issues/33">https://github.com/CharlesShang/FastMaskRCNN/issues/33</a>, 其中一个解决方法就是将 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name))</span></code> 改成 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name),</span> <span class="pre">dtype=np.uint8)</span></code></p>
-<p><cite>(不知道有没有用，程序还在跑⊙﹏⊙)</cite></p>
+<p>关于这个Issue可以看这里：<a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN/issues/33">https://github.com/CharlesShang/FastMaskRCNN/issues/33</a>, 其中一个解决方法就是将 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name))</span></code> 改成 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name),</span> <span class="pre">dtype=np.uint8)</span></code>
+（貌似是数据集的问题，还是解决不了⊙﹏⊙，换个repo试试）</p>
 </div></blockquote>
 </li>
 </ul>
