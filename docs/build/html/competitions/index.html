@@ -95,6 +95,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Competitions Notes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#kaggle">Kaggle 细胞核识别</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#todo">TODO</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
 </ul>
 </li>
@@ -178,9 +179,34 @@
 <p><cite>Find the nuclei in divergent images to advance medical discovery</cite> (2 months to go)</p>
 <blockquote>
 <div><p>目标要创建一个自动化细胞核检测算法，加快医学研究。官方给出了一些测试集和训练集，问题可以转化为在图像中找到特定的目标？(<cite>这个是机器学习/CV在医疗方面的应用，比较感兴趣，但可能需要医学背景，待讨论</cite>)</p>
-<p><cite>关于题目更多的背景介绍可以看</cite> <a class="reference external" href="https://www.kaggle.com/c/data-science-bowl-2018#description">这里</a>。下为Poster:</p>
-<p><a class="reference internal" href="../_images/speed-cures.jpg"><img alt="speed-cures" class="align-middle" src="../_images/speed-cures.jpg" style="width: 400px;" /></a></p>
+<p><cite>关于题目更多的背景介绍可以看</cite> <a class="reference external" href="https://www.kaggle.com/c/data-science-bowl-2018#description">这里</a>。</p>
 </div></blockquote>
+</div>
+<div class="section" id="todo">
+<h3>TODO<a class="headerlink" href="#todo" title="永久链接至标题">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">task</th>
+<th class="head">完成情况</th>
+<th class="head">time</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>mask-rcnn环境搭建</td>
+<td>✔</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>mask-rcnn training</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="notes">
 <h3>Notes<a class="headerlink" href="#notes" title="永久链接至标题">¶</a></h3>
@@ -195,23 +221,30 @@
 </div></blockquote>
 </div></blockquote>
 </li>
-<li><p class="first">Windows 下的Mask-RCNN编译</p>
-<blockquote>
-<div><p><a class="reference internal" href="../_images/mask-rcnn.png"><img alt="mask-rcnn" class="align-middle" src="../_images/mask-rcnn.png" style="width: 400px;" /></a></p>
-<ul>
+<li><dl class="first docutils">
+<dt>Windows 下的Mask-RCNN编译</dt>
+<dd><p class="first"><a class="reference internal" href="../_images/mask-rcnn.png"><img alt="mask-rcnn" class="align-middle" src="../_images/mask-rcnn.png" style="width: 400px;" /></a></p>
+<ul class="simple">
 <li><dl class="first docutils">
 <dt>Github repo:</dt>
-<dd><ol class="first arabic simple">
-<li><a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN">https://github.com/CharlesShang/FastMaskRCNN</a></li>
-<li><a class="reference external" href="https://github.com/matterport/Mask_RCNN">https://github.com/matterport/Mask_RCNN</a></li>
+<dd><ol class="first last arabic">
+<li><a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN">https://github.com/CharlesShang/FastMaskRCNN</a> (在windows下跑不通..)</li>
+<li><a class="reference external" href="https://github.com/matterport/Mask_RCNN">https://github.com/matterport/Mask_RCNN</a> (亲测可行)</li>
 </ol>
-<p class="last">(第一个repo在windows下跑不通..)</p>
 </dd>
 </dl>
 </li>
+</ul>
+<p>先放个第二个repo的效果，第一个repo跑不通，记录在后面。
+<a class="reference internal" href="../_images/demo-mask-rcnn.png"><img alt="demo-mask-rcnn" class="align-middle" src="../_images/demo-mask-rcnn.png" style="width: 700px;" /></a></p>
+<p>CSDN上有个对第二个repo的踩坑记录(<a class="reference external" href="http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&amp;fps=1">http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&amp;fps=1</a>)</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>下面是第一个repo的踩坑记录:</dt>
+<dd><ul class="first simple">
 <li><dl class="first docutils">
 <dt>How-to:</dt>
-<dd><ol class="first last arabic simple">
+<dd><ol class="first last arabic">
 <li>Go to <code class="docutils literal"><span class="pre">./libs/datasets/pycocotools</span></code> and run <code class="docutils literal"><span class="pre">make</span></code></li>
 <li>Download COCO dataset, place it into <code class="docutils literal"><span class="pre">./data</span></code>, then run <code class="docutils literal"><span class="pre">python</span> <span class="pre">download_and_convert_data.py</span></code> to build tf-records. It takes a while.（要先解压）</li>
 <li>Download pretrained resnet50 model, <code class="docutils literal"><span class="pre">wget</span> <span class="pre">http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz</span></code>, unzip it, place it into <code class="docutils literal"><span class="pre">./data/pretrained_models/</span></code></li>
@@ -252,9 +285,14 @@
 <span class="ne">TypeError</span><span class="p">:</span> <span class="nb">int</span><span class="p">()</span> <span class="n">argument</span> <span class="n">must</span> <span class="n">be</span> <span class="n">a</span> <span class="n">string</span><span class="p">,</span> <span class="n">a</span> <span class="nb">bytes</span><span class="o">-</span><span class="n">like</span> <span class="nb">object</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">number</span><span class="p">,</span> <span class="ow">not</span> <span class="s1">&#39;JpegImageFile&#39;</span>
 </pre></div>
 </div>
-<p>关于这个Issue可以看这里：<a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN/issues/33">https://github.com/CharlesShang/FastMaskRCNN/issues/33</a>, 其中一个解决方法就是将 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name))</span></code> 改成 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name),</span> <span class="pre">dtype=np.uint8)</span></code>
-（貌似是数据集的问题，还是解决不了⊙﹏⊙，换个repo试试）</p>
-</div></blockquote>
+<p class="last">关于这个Issue可以看这里：<a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN/issues/33">https://github.com/CharlesShang/FastMaskRCNN/issues/33</a>, 其中一个解决方法就是将 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name))</span></code> 改成 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name),</span> <span class="pre">dtype=np.uint8)</span></code>
+（貌似是数据集的问题，还是解决不了⊙﹏⊙，换第二个repo试试）</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
 </li>
 </ul>
 </div>
