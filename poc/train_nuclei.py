@@ -11,9 +11,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from Mask_RCNN.config import Config
-import Mask_RCNN.utils
-import Mask_RCNN.model as modellib
-import Mask_RCNN.visualize
+from Mask_RCNN import utils
+from Mask_RCNN import model as modellib
+from Mask_RCNN import visualize
 from Mask_RCNN.model import log
 
 # Root directory of the project
@@ -42,7 +42,8 @@ class ShapesConfig(Config):
     IMAGES_PER_GPU = 8
 
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 3  # background + 3 shapes
+    # NUM_CLASSES = 1 + 3  # background + 3 shapes
+    NUM_CLASSES = 1 + 1  # background + 1 shapes
 
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
@@ -63,7 +64,7 @@ class ShapesConfig(Config):
     VALIDATION_STEPS = 5
 
 
-# config = ShapesConfig()
+config = ShapesConfig()
 # config.display()
 
 def get_ax(rows=1, cols=1, size=8):
@@ -224,6 +225,7 @@ for image_id in image_ids:
     mask, class_ids = dataset_train.load_mask(image_id)
     visualize.display_top_masks(image, mask, class_ids, dataset_train.class_names)
 
+exit()
 
 # Create model in training mode
 model = modellib.MaskRCNN(mode="training", config=config,
@@ -261,6 +263,7 @@ model.train(dataset_train, dataset_val,
 # Passing layers="all" trains all layers. You can also
 # pass a regular expression to select which layers to
 # train by name pattern.
+# learning_rate = 0.0001
 model.train(dataset_train, dataset_val,
             learning_rate=config.LEARNING_RATE / 10,
             epochs=2,
