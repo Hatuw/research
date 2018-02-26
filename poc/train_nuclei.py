@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+sys.path.append("Mask_RCNN")
 import random
 import math
 import re
@@ -10,11 +11,17 @@ import cv2
 import matplotlib
 import matplotlib.pyplot as plt
 
-from Mask_RCNN.config import Config
-from Mask_RCNN import utils
-from Mask_RCNN import model as modellib
-from Mask_RCNN import visualize
-from Mask_RCNN.model import log
+from config import Config
+import utils
+import model as modellib
+import visualize
+from model import log
+
+# from Mask_RCNN.config import Config
+# from Mask_RCNN import utils
+# from Mask_RCNN import model as modellib
+# from Mask_RCNN import visualize
+# from Mask_RCNN.model import log
 
 # Root directory of the project
 ROOT_DIR = os.getcwd()
@@ -23,10 +30,10 @@ ROOT_DIR = os.getcwd()
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
 # Local path to trained weights file
-# COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
+COCO_MODEL_PATH = os.path.join(ROOT_DIR, "Mask_RCNN/mask_rcnn_coco.h5")
 # Download COCO trained weights from Releases if needed
-# if not os.path.exists(COCO_MODEL_PATH):
-#     utils.download_trained_weights(COCO_MODEL_PATH)
+if not os.path.exists(COCO_MODEL_PATH):
+    utils.download_trained_weights(COCO_MODEL_PATH)
 
 class ShapesConfig(Config):
     """Configuration for training on the toy shapes dataset.
@@ -91,9 +98,10 @@ class ShapesDataset(utils.Dataset):
         height, width: the size of the generated images.
         """
         # Add classes
-        self.add_class("shapes", 1, "square")
-        self.add_class("shapes", 2, "circle")
-        self.add_class("shapes", 3, "triangle")
+        # self.add_class("shapes", 1, "square")
+        # self.add_class("shapes", 2, "circle")
+        # self.add_class("shapes", 3, "triangle")
+        self.add_class("shapes", 1, "nuclei")
 
         # Add images
         # Generate random specifications of images (i.e. color and
