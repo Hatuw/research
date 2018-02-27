@@ -69,6 +69,8 @@ Notes
 
     CSDN上有个对第二个repo的踩坑记录(http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&fps=1)
 
+    ``Mask_RCNN/model.py`` 是Mask_RCNN的resnet101实现；``Mask_RCNN/train_shapes.``是用自己数据集训练Mask_RCNN的一个demo，其中 ``ShapesDataset`` 类下的 ``load_image()`` 、 ``load_mask()`` 、``image_reference()`` 方法需要重写以向外提供数据。
+
     - 下面是第一个repo的踩坑记录:
         - How-to:
             1) Go to ``./libs/datasets/pycocotools`` and run ``make``
