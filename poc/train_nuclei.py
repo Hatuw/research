@@ -92,6 +92,12 @@ class ShapesDataset(utils.Dataset):
     The images are generated on the fly. No file access required.
     """
 
+    '''
+    load_image()
+    load_mask()
+    image_reference()
+    '''
+
     def load_shapes(self, count, height, width):
         """Generate the requested number of synthetic images.
         count: number of images to generate.
@@ -168,6 +174,8 @@ class ShapesDataset(utils.Dataset):
                                 (x+s/math.sin(math.radians(60)), y+s),
                                 ]], dtype=np.int32)
             cv2.fillPoly(image, points, color)
+        elif shape == 'nuclei':
+            cv2.circle(image, (x, y), s, color, -1)
         return image
 
     def random_shape(self, height, width):
@@ -180,7 +188,8 @@ class ShapesDataset(utils.Dataset):
                             and location. Differs per shape type.
         """
         # Shape
-        shape = random.choice(["square", "circle", "triangle"])
+        # shape = random.choice(["square", "circle", "triangle"])
+        shape = random.choice(["nuclei"])
         # Color
         color = tuple([random.randint(0, 255) for _ in range(3)])
         # Center x, y
