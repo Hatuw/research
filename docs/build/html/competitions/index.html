@@ -238,7 +238,7 @@
 <p>先放个第二个repo的效果，第一个repo跑不通，记录在后面。
 <a class="reference internal" href="../_images/demo-mask-rcnn.png"><img alt="demo-mask-rcnn" class="align-middle" src="../_images/demo-mask-rcnn.png" style="width: 700px;" /></a></p>
 <p>CSDN上有个对第二个repo的踩坑记录(<a class="reference external" href="http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&amp;fps=1">http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&amp;fps=1</a>)</p>
-<p><code class="docutils literal"><span class="pre">Mask_RCNN/model.py</span></code> 是Mask_RCNN的resnet101实现；<code class="docutils literal"><span class="pre">Mask_RCNN/train_shapes.``是用自己数据集训练Mask_RCNN的一个demo，其中</span> <span class="pre">``ShapesDataset</span></code> 类下的 <code class="docutils literal"><span class="pre">load_image()</span></code> 、 <code class="docutils literal"><span class="pre">load_mask()</span></code> 、<code class="docutils literal"><span class="pre">image_reference()</span></code> 方法需要重写以向外提供数据。</p>
+<p><code class="docutils literal"><span class="pre">Mask_RCNN/model.py</span></code> 是Mask_RCNN的resnet101实现； <code class="docutils literal"><span class="pre">Mask_RCNN/train_shapes.ipynb</span></code> 是用自己数据集训练Mask_RCNN的一个demo，其中 <code class="docutils literal"><span class="pre">ShapesDataset</span></code> 类下的 <code class="docutils literal"><span class="pre">load_image()</span></code> 、 <code class="docutils literal"><span class="pre">load_mask()</span></code> 、<code class="docutils literal"><span class="pre">image_reference()</span></code> 方法需要重写以向外提供数据。 <code class="docutils literal"><span class="pre">poc/train_nuclei.py</span></code> 就是将此project应用于检测细胞核的尝试。</p>
 <ul class="last">
 <li><dl class="first docutils">
 <dt>下面是第一个repo的踩坑记录:</dt>
