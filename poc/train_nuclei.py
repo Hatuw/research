@@ -50,7 +50,7 @@ class ShapesConfig(Config):
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 8
+    IMAGES_PER_GPU = 4
 
     # Number of classes (including background)
     # NUM_CLASSES = 1 + 3  # background + 3 shapes
@@ -151,8 +151,7 @@ class ShapesDataset(utils.Dataset):
         # return image
 
         info = self.image_info[image_id]
-        print(info)
-        image = plt.imread(info['path'])
+        image = plt.imread(info['path'])[:,:,:3]
         return image
 
     def image_reference(self, image_id):
@@ -298,7 +297,6 @@ for image_id in image_ids:
                                 dataset_train.class_names,
                                 limit=1)
 
-exit()
 
 # Create model in training mode
 model = modellib.MaskRCNN(mode="training", config=config,
@@ -306,7 +304,7 @@ model = modellib.MaskRCNN(mode="training", config=config,
 
 
 # Which weights to start with?
-init_with = "coco"  # imagenet, coco, or last
+init_with = "last"  # imagenet, coco, or last
 
 if init_with == "imagenet":
     model.load_weights(model.get_imagenet_weights(), by_name=True)
