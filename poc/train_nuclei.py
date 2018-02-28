@@ -8,6 +8,7 @@ import re
 import time
 import numpy as np
 import cv2
+import skimage
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -28,6 +29,9 @@ ROOT_DIR = os.getcwd()
 
 # Directory to save logs and trained model
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
+
+# Directory to load source nuclei dataset(training)
+DATA_DIR = os.path.join(ROOT_DIR, "../dataset/stage1_train")
 
 # Local path to trained weights file
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "Mask_RCNN/mask_rcnn_coco.h5")
@@ -98,7 +102,8 @@ class ShapesDataset(utils.Dataset):
     image_reference()
     '''
 
-    def load_shapes(self, count, height, width):
+    def load_shapes(self, count, image_ids):
+    # def load_shapes(self, count, height, width, image_ids):
         """Generate the requested number of synthetic images.
         count: number of images to generate.
         height, width: the size of the generated images.
@@ -113,11 +118,22 @@ class ShapesDataset(utils.Dataset):
         # Generate random specifications of images (i.e. color and
         # list of shapes sizes and locations). This is more compact than
         # actual images. Images are generated on the fly in load_image().
-        for i in range(count):
-            bg_color, shapes = self.random_image(height, width)
-            self.add_image("shapes", image_id=i, path=None,
-                           width=width, height=height,
-                           bg_color=bg_color, shapes=shapes)
+        # for i in range(count):
+        #     bg_color, shapes = self.random_image(height, width)
+        #     self.add_image("shapes", image_id=i, path=None,
+        #                    width=width, height=height,
+        #                    bg_color=bg_color, shapes=shapes)
+
+        if not image_ids:
+            image_ids = os.listdir(DATA_DIR)
+        for index, item in enumerate(image_ids):
+            temp_image_path = "{0}/{1}/images/{1}.png".format(DATA_DIR, item)
+            # print(temp_image_path)
+            # break
+            self.add_image("shapes", image_id=index,
+                            kaggle_id=item,
+                            path=temp_image_path)
+
 
     def load_image(self, image_id):
         """Generate an image from the specs of the given image ID.
@@ -125,12 +141,18 @@ class ShapesDataset(utils.Dataset):
         in this case it generates the image on the fly from the
         specs in image_info.
         """
+
+        # info = self.image_info[image_id]
+        # bg_color = np.array(info['bg_color']).reshape([1, 1, 3])
+        # image = np.ones([info['height'], info['width'], 3], dtype=np.uint8)
+        # image = image * bg_color.astype(np.uint8)
+        # for shape, color, dims in info['shapes']:
+        #     image = self.draw_shape(image, shape, dims, color)
+        # return image
+
         info = self.image_info[image_id]
-        bg_color = np.array(info['bg_color']).reshape([1, 1, 3])
-        image = np.ones([info['height'], info['width'], 3], dtype=np.uint8)
-        image = image * bg_color.astype(np.uint8)
-        for shape, color, dims in info['shapes']:
-            image = self.draw_shape(image, shape, dims, color)
+        print(info)
+        image = plt.imread(info['path'])
         return image
 
     def image_reference(self, image_id):
@@ -144,20 +166,44 @@ class ShapesDataset(utils.Dataset):
     def load_mask(self, image_id):
         """Generate instance masks for shapes of the given image ID.
         """
+        # info = self.image_info[image_id]
+        # shapes = info['shapes']
+        # count = len(shapes)
+        # mask = np.zeros([info['height'], info['width'], count], dtype=np.uint8)
+        # for i, (shape, _, dims) in enumerate(info['shapes']):
+        #     mask[:, :, i:i+1] = self.draw_shape(mask[:, :, i:i+1].copy(),
+        #                                         shape, dims, 1)
+        # # Handle occlusions
+        # occlusion = np.logical_not(mask[:, :, -1]).astype(np.uint8)
+        # for i in range(count-2, -1, -1):
+        #     mask[:, :, i] = mask[:, :, i] * occlusion
+        #     occlusion = np.logical_and(occlusion, np.logical_not(mask[:, :, i]))
+        # # Map class names to class IDs.
+        # class_ids = np.array([self.class_names.index(s[0]) for s in shapes])
+        # return mask, class_ids.astype(np.int32)
+
         info = self.image_info[image_id]
-        shapes = info['shapes']
-        count = len(shapes)
-        mask = np.zeros([info['height'], info['width'], count], dtype=np.uint8)
-        for i, (shape, _, dims) in enumerate(info['shapes']):
-            mask[:, :, i:i+1] = self.draw_shape(mask[:, :, i:i+1].copy(),
-                                                shape, dims, 1)
-        # Handle occlusions
-        occlusion = np.logical_not(mask[:, :, -1]).astype(np.uint8)
-        for i in range(count-2, -1, -1):
-            mask[:, :, i] = mask[:, :, i] * occlusion
-            occlusion = np.logical_and(occlusion, np.logical_not(mask[:, :, i]))
-        # Map class names to class IDs.
-        class_ids = np.array([self.class_names.index(s[0]) for s in shapes])
+        count = 1
+        kaggle_id = info['kaggle_id']
+        mask_dir = "{0}/{1}/masks".format(DATA_DIR, kaggle_id)
+        masks_list = os.listdir(mask_dir)
+        for index, item in enumerate(masks_list):
+            temp_mask_path = "{}/{}".format(mask_dir, item)
+            if index == 0:
+                # mask = plt.imread(temp_mask_path)
+                mask = skimage.io.imread(temp_mask_path)
+            else:
+                mask += skimage.io.imread(temp_mask_path)
+                # mask += plt.imread(temp_mask_path)
+
+        occlusion = np.logical_not(mask[:, -1]).astype(np.uint8)
+        for i in range(count-2, -1):
+            mask[:, i] = mask[:, i] * occlusion
+            occlusion = np.logical_and(occlusion, np.logical_not(mask[:, i]))
+
+        # class_ids = np.array([1 for _ in range(len(masks_list))])
+        class_ids = np.array([1])
+        mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB)
         return mask, class_ids.astype(np.int32)
 
     def draw_shape(self, image, shape, dims, color):
@@ -223,24 +269,34 @@ class ShapesDataset(utils.Dataset):
         shapes = [s for i, s in enumerate(shapes) if i in keep_ixs]
         return bg_color, shapes
 
+# split_training and testing set
+image_ids = os.listdir(DATA_DIR)
+np.random.shuffle(image_ids)
+dtset_size = len(image_ids)
+training_ids = image_ids[:int(dtset_size*0.8)]
+testing_ids = image_ids[int(dtset_size*0.8):]
 
 # Training dataset
 dataset_train = ShapesDataset()
-dataset_train.load_shapes(500, config.IMAGE_SHAPE[0], config.IMAGE_SHAPE[1])
+# dataset_train.load_shapes(500, config.IMAGE_SHAPE[0], config.IMAGE_SHAPE[1])
+dataset_train.load_shapes(len(training_ids), image_ids=training_ids)
 dataset_train.prepare()
 
 # Validation dataset
 dataset_val = ShapesDataset()
-dataset_val.load_shapes(50, config.IMAGE_SHAPE[0], config.IMAGE_SHAPE[1])
+# dataset_val.load_shapes(50, config.IMAGE_SHAPE[0], config.IMAGE_SHAPE[1])
+dataset_val.load_shapes(len(testing_ids), image_ids=testing_ids)
 dataset_val.prepare()
 
 
 # Load and display random samples
-image_ids = np.random.choice(dataset_train.image_ids, 4)
+image_ids = np.random.choice(dataset_train.image_ids, 2)
 for image_id in image_ids:
     image = dataset_train.load_image(image_id)
     mask, class_ids = dataset_train.load_mask(image_id)
-    visualize.display_top_masks(image, mask, class_ids, dataset_train.class_names)
+    visualize.display_top_masks(image, mask, class_ids,
+                                dataset_train.class_names,
+                                limit=1)
 
 exit()
 
