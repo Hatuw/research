@@ -43,7 +43,9 @@ def display_images(images, titles=None, cols=4, cmap=None, norm=None,
         plt.subplot(rows, cols, i)
         plt.title(title, fontsize=9)
         plt.axis('off')
-        plt.imshow(image.astype(np.uint8), cmap=cmap,
+        # plt.imshow(image.astype(np.uint8), cmap=cmap,
+        #            norm=norm, interpolation=interpolation)
+        plt.imshow(image, cmap=cmap,
                    norm=norm, interpolation=interpolation)
         i += 1
     plt.show()
