@@ -11,7 +11,17 @@ https://www.kaggle.com/competitions
 
 `Find the nuclei in divergent images to advance medical discovery` (2 months to go)
 
-    目标要创建一个自动化细胞核检测算法，加快医学研究。官方给出了一些测试集和训练集，问题可以转化为在图像中找到特定的目标？(`这个是机器学习/CV在医疗方面的应用，比较感兴趣，但可能需要医学背景，待讨论`)
+    目标要创建一个自动化细胞核检测算法，加快医学研究。官方给出了一些测试集和训练集，问题可以转化为在图像中找到特定的目标？
+
+    部分images数据如下：
+
+    |nuclei-demo|
+
+    .. |nuclei-demo| image:: ../assets/demo_nuclei.png
+        :width: 500px
+        :align: middle
+
+    (mask为细胞核的mask二值图)
 
     `关于题目更多的背景介绍可以看` `这里 <https://www.kaggle.com/c/data-science-bowl-2018#description>`_。
 
@@ -24,13 +34,15 @@ https://www.kaggle.com/competitions
 TODO
 >>>>>>>>>>>>>>>>>>>
 
-+--------------------------+-------------+-------------+
-|           task           |   完成情况  |    time     |
-+==========================+=============+=============+
-|     mask-rcnn环境搭建    |      ✔      |             |
-+--------------------------+-------------+-------------+
-|     mask-rcnn training   |             |             |
-+--------------------------+-------------+-------------+
++--------------------------+-------------+--------------------+
+|           task           |   完成情况  |    comment         |
++==========================+=============+====================+
+|     mask-rcnn环境搭建    |      ✔      |                    |
++--------------------------+-------------+--------------------+
+|     mask-rcnn training   |   进行中    |需要处理显存泄漏问题|
++--------------------------+-------------+--------------------+
+|            调参          |             |                    |
++--------------------------+-------------+--------------------+
 
 Notes
 >>>>>>>>>>>>>>>>>>>
@@ -60,7 +72,7 @@ Notes
         1) https://github.com/CharlesShang/FastMaskRCNN (在windows下跑不通..)
         2) https://github.com/matterport/Mask_RCNN (亲测可行)
 
-    先放个第二个repo的效果，第一个repo跑不通，记录在后面。
+    先放个第二个repo的效果，第一个repo跑不通，踩坑记录在后面。
     |demo-mask-rcnn|
 
     .. |demo-mask-rcnn| image:: ../assets/demo-mask-rcnn.png
@@ -69,7 +81,8 @@ Notes
 
     CSDN上有个对第二个repo的踩坑记录(http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&fps=1)
 
-    ``Mask_RCNN/model.py`` 是Mask_RCNN的resnet101实现； ``Mask_RCNN/train_shapes.ipynb`` 是用自己数据集训练Mask_RCNN的一个demo，其中 ``ShapesDataset`` 类下的 ``load_image()`` 、 ``load_mask()`` 、``image_reference()`` 方法需要重写以向外提供数据。 ``poc/train_nuclei.py`` 就是将此project应用于检测细胞核的尝试。
+    ``Mask_RCNN/model.py`` 是Mask-RCNN的 **resnet101** 实现； ``Mask_RCNN/train_shapes.ipynb`` 是用自己数据集训练Mask_RCNN的一个demo，其中 ``ShapesDataset`` 类下的 ``load_image()`` 、 ``load_mask()`` 、``image_reference()`` 方法需要重写以向外提供数据。 ``poc/train_nuclei.py`` 就是将此project应用于检测细胞核的尝试。( `训练的时候要用一张显存较大的显卡，不然可能会出现内存泄漏错误` )
+
 
     - 下面是第一个repo的踩坑记录:
         - How-to:
@@ -111,7 +124,6 @@ Notes
                 img = img.astype(np.uint8)
             TypeError: int() argument must be a string, a bytes-like object or a number, not 'JpegImageFile'
 
-        关于这个Issue可以看这里：https://github.com/CharlesShang/FastMaskRCNN/issues/33, 其中一个解决方法就是将 ``[296]: img = np.array(Image.open(img_name))`` 改成 ``[296]: img = np.array(Image.open(img_name), dtype=np.uint8)`` 
-        （貌似是数据集的问题，还是解决不了⊙﹏⊙，换第二个repo试试）
+        关于这个Issue可以看这里：https://github.com/CharlesShang/FastMaskRCNN/issues/33, 其中一个解决方法就是将 ``[296]: img = np.array(Image.open(img_name))`` 改成 ``[296]: img = np.array(Image.open(img_name), dtype=np.uint8)`` （不过还是解决不了⊙﹏⊙）
 
 
