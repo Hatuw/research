@@ -297,7 +297,6 @@ for image_id in image_ids:
                                 dataset_train.class_names,
                                 limit=1)
 
-
 # Create model in training mode
 model = modellib.MaskRCNN(mode="training", config=config,
                           model_dir=MODEL_DIR)
