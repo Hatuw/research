@@ -18,12 +18,6 @@ import model as modellib
 import visualize
 from model import log
 
-# from Mask_RCNN.config import Config
-# from Mask_RCNN import utils
-# from Mask_RCNN import model as modellib
-# from Mask_RCNN import visualize
-# from Mask_RCNN.model import log
-
 # Root directory of the project
 ROOT_DIR = os.getcwd()
 
@@ -50,7 +44,7 @@ class ShapesConfig(Config):
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 4
+    IMAGES_PER_GPU = 8
 
     # Number of classes (including background)
     # NUM_CLASSES = 1 + 3  # background + 3 shapes
@@ -69,7 +63,7 @@ class ShapesConfig(Config):
     TRAIN_ROIS_PER_IMAGE = 32
 
     # Use a small epoch since the data is simple
-    STEPS_PER_EPOCH = 100
+    STEPS_PER_EPOCH = 500   # 100
 
     # use small validation steps since the epoch is small
     VALIDATION_STEPS = 5
@@ -151,7 +145,7 @@ class ShapesDataset(utils.Dataset):
         # return image
 
         info = self.image_info[image_id]
-        image = plt.imread(info['path'])[:,:,:3]
+        image = plt.imread(info['path'])[:,:,:3]    # some image maybe 4 channels, need to fix it
         return image
 
     def image_reference(self, image_id):
@@ -205,6 +199,7 @@ class ShapesDataset(utils.Dataset):
         mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB)
         return mask, class_ids.astype(np.int32)
 
+    '''
     def draw_shape(self, image, shape, dims, color):
         """Draws a shape from the given specs."""
         # Get the center x, y and the size s
@@ -267,6 +262,7 @@ class ShapesDataset(utils.Dataset):
         keep_ixs = utils.non_max_suppression(np.array(boxes), np.arange(N), 0.3)
         shapes = [s for i, s in enumerate(shapes) if i in keep_ixs]
         return bg_color, shapes
+    '''
 
 # split_training and testing set
 image_ids = os.listdir(DATA_DIR)
