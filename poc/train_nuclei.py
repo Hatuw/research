@@ -44,7 +44,7 @@ class ShapesConfig(Config):
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 8  # 8
+    IMAGES_PER_GPU = 4  # 8
 
     # Number of classes (including background)
     # NUM_CLASSES = 1 + 3  # background + 3 shapes
@@ -180,89 +180,30 @@ class ShapesDataset(utils.Dataset):
         kaggle_id = info['kaggle_id']
         mask_dir = "{0}/{1}/masks".format(DATA_DIR, kaggle_id)
         masks_list = os.listdir(mask_dir)
+
+        count = len(masks_list)
+        temp_img = skimage.io.imread(mask_dir + "/" + masks_list[0])
+        mask = np.zeros([temp_img.shape[0], temp_img.shape[1], len(masks_list)])
         for index, item in enumerate(masks_list):
             temp_mask_path = "{}/{}".format(mask_dir, item)
-            if index == 0:
-                # mask = plt.imread(temp_mask_path)
-                mask = skimage.io.imread(temp_mask_path)
-            else:
-                mask += skimage.io.imread(temp_mask_path)
-                # mask += plt.imread(temp_mask_path)
+            mask[:, :, index:index+1] = skimage.io.imread(temp_mask_path)[:, : , np.newaxis]
+            # if index == 0:
+            #     # mask = plt.imread(temp_mask_path)
+            #     mask = skimage.io.imread(temp_mask_path)
+            # else:
+            #     mask += skimage.io.imread(temp_mask_path)
+            #     # mask += plt.imread(temp_mask_path)
 
-        occlusion = np.logical_not(mask[:, -1]).astype(np.uint8)
-        for i in range(count-2, -1):
-            mask[:, i] = mask[:, i] * occlusion
-            occlusion = np.logical_and(occlusion, np.logical_not(mask[:, i]))
+        # Handle occlusions
+        occlusion = np.logical_not(mask[:, :, -1]).astype(np.uint8)
+        for i in range(count-2, -1, -1):
+            mask[:, :, i] = mask[:, :, i] * occlusion
+            occlusion = np.logical_and(occlusion, np.logical_not(mask[:, :, i]))
 
-        # class_ids = np.array([1 for _ in range(len(masks_list))])
-        class_ids = np.array([1])
-        mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB)
+        # class_ids = np.array([1])
+        class_ids = np.array([1 for _ in range(0, count, 1)])
+        # mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB)
         return mask, class_ids.astype(np.int32)
-
-    '''
-    def draw_shape(self, image, shape, dims, color):
-        """Draws a shape from the given specs."""
-        # Get the center x, y and the size s
-        x, y, s = dims
-        if shape == 'square':
-            cv2.rectangle(image, (x-s, y-s), (x+s, y+s), color, -1)
-        elif shape == "circle":
-            cv2.circle(image, (x, y), s, color, -1)
-        elif shape == "triangle":
-            points = np.array([[(x, y-s),
-                                (x-s/math.sin(math.radians(60)), y+s),
-                                (x+s/math.sin(math.radians(60)), y+s),
-                                ]], dtype=np.int32)
-            cv2.fillPoly(image, points, color)
-        elif shape == 'nuclei':
-            cv2.circle(image, (x, y), s, color, -1)
-        return image
-
-    def random_shape(self, height, width):
-        """Generates specifications of a random shape that lies within
-        the given height and width boundaries.
-        Returns a tuple of three valus:
-        * The shape name (square, circle, ...)
-        * Shape color: a tuple of 3 values, RGB.
-        * Shape dimensions: A tuple of values that define the shape size
-                            and location. Differs per shape type.
-        """
-        # Shape
-        # shape = random.choice(["square", "circle", "triangle"])
-        shape = random.choice(["nuclei"])
-        # Color
-        color = tuple([random.randint(0, 255) for _ in range(3)])
-        # Center x, y
-        buffer = 20
-        y = random.randint(buffer, height - buffer - 1)
-        x = random.randint(buffer, width - buffer - 1)
-        # Size
-        s = random.randint(buffer, height//4)
-        return shape, color, (x, y, s)
-
-    def random_image(self, height, width):
-        """Creates random specifications of an image with multiple shapes.
-        Returns the background color of the image and a list of shape
-        specifications that can be used to draw the image.
-        """
-        # Pick random background color
-        bg_color = np.array([random.randint(0, 255) for _ in range(3)])
-        # Generate a few random shapes and record their
-        # bounding boxes
-        shapes = []
-        boxes = []
-        N = random.randint(1, 4)
-        for _ in range(N):
-            shape, color, dims = self.random_shape(height, width)
-            shapes.append((shape, color, dims))
-            x, y, s = dims
-            boxes.append([y-s, x-s, y+s, x+s])
-        # Apply non-max suppression wit 0.3 threshold to avoid
-        # shapes covering each other
-        keep_ixs = utils.non_max_suppression(np.array(boxes), np.arange(N), 0.3)
-        shapes = [s for i, s in enumerate(shapes) if i in keep_ixs]
-        return bg_color, shapes
-    '''
 
 # split_training and testing set
 image_ids = os.listdir(DATA_DIR)
@@ -330,10 +271,10 @@ model.train(dataset_train, dataset_val,
 # pass a regular expression to select which layers to
 # train by name pattern.
 # learning_rate = 0.0001
-model.train(dataset_train, dataset_val,
-            learning_rate=config.LEARNING_RATE / 10,
-            epochs=2,
-            layers="all")
+# model.train(dataset_train, dataset_val,
+#             learning_rate=config.LEARNING_RATE / 10,
+#             epochs=2,
+#             layers="all")
 
 
 # Save weights
