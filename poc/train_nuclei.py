@@ -53,7 +53,7 @@ class ShapesConfig(Config):
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
     IMAGE_MIN_DIM = 128
-    IMAGE_MAX_DIM = 128
+    IMAGE_MAX_DIM = 256 # 128
 
     # Use smaller anchors because our image and objects are small
     RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)  # anchor side in pixels
@@ -63,10 +63,10 @@ class ShapesConfig(Config):
     TRAIN_ROIS_PER_IMAGE = 32
 
     # Use a small epoch since the data is simple
-    STEPS_PER_EPOCH = 100   # 100
+    STEPS_PER_EPOCH = 200   # 100
 
     # use small validation steps since the epoch is small
-    VALIDATION_STEPS = 5
+    VALIDATION_STEPS = 10   # 5
 
 
 config = ShapesConfig()
@@ -226,13 +226,13 @@ dataset_val.prepare()
 
 
 # Load and display random samples
-image_ids = np.random.choice(dataset_train.image_ids, 2)
-for image_id in image_ids:
-    image = dataset_train.load_image(image_id)
-    mask, class_ids = dataset_train.load_mask(image_id)
-    visualize.display_top_masks(image, mask, class_ids,
-                                dataset_train.class_names,
-                                limit=1)
+# image_ids = np.random.choice(dataset_train.image_ids, 2)
+# for image_id in image_ids:
+#     image = dataset_train.load_image(image_id)
+#     mask, class_ids = dataset_train.load_mask(image_id)
+#     visualize.display_top_masks(image, mask, class_ids,
+#                                 dataset_train.class_names,
+#                                 limit=1)
 
 # Create model in training mode
 model = modellib.MaskRCNN(mode="training", config=config,
