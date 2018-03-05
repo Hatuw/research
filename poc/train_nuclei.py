@@ -262,8 +262,9 @@ elif init_with == "last":
 # which layers to train by name pattern.
 model.train(dataset_train, dataset_val,
             learning_rate=config.LEARNING_RATE,
-            epochs=1,
+            epochs=2,
             layers='heads')
+# epochs 1
 
 
 # Fine tune all layers
@@ -271,10 +272,11 @@ model.train(dataset_train, dataset_val,
 # pass a regular expression to select which layers to
 # train by name pattern.
 # learning_rate = 0.0001
-# model.train(dataset_train, dataset_val,
-#             learning_rate=config.LEARNING_RATE / 10,
-#             epochs=2,
-#             layers="all")
+model.train(dataset_train, dataset_val,
+            learning_rate=config.LEARNING_RATE / 10,
+            epochs=4,
+            layers="all")
+# epochs 2
 
 
 # Save weights
