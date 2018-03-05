@@ -11,6 +11,8 @@ import numpy as np
 import skimage
 import matplotlib
 import matplotlib.pyplot as plt
+from PIL import Image
+from skimage.morphology import label
 
 from config import Config
 import utils
@@ -187,17 +189,35 @@ def detect_nuclei():
     # log("gt_bbox", gt_bbox)
     # log("gt_mask", gt_mask)
 
+    # process_result(gt_mask[:, :, 0])
+    print(dataset_val)
     fig = plt.figure()
-    imshow = np.sum(gt_mask, -1)
-    print(imshow.shape)
-    plt.imshow(imshow, cmap='gray')
+    add_mask = np.sum(gt_mask, -1)
+    # plt.imsave('./{}.png'.format(image_id), add_mask, cmap='gray')
+    plt.subplot(1,2,1),plt.imshow(original_image)
+    plt.subplot(1,2,2),plt.imshow(add_mask, cmap='gray')
     plt.show()
     # visualize.display_instances(original_image, gt_bbox, gt_mask, gt_class_id,
     #                         dataset_train.class_names, figsize=(8, 8))
 
 
-def process_result():
-    pass
+def process_result(img_list):
+    def rle_encoding(x):
+        dots = np.where(x.T.flatten() == 1)[0]
+        run_lengths = []
+        prev = -2
+        for b in dots:
+            if (b>prev+1):
+                run_lengths.extend((b + 1, 0))
+                run_lengths[-1] += 1
+                prev = b
+        return run_lengths
+    def prob_to_rles(x, cutoff=0.5):
+        lab_img = label(x > cutoff)
+        for i in range(1, lab_img.max() + 1):
+            yield rle_encoding(lab_img == i)
+
+    # print(list(prob_to_rles(img_list)))
 
 
 # split_training and testing set
