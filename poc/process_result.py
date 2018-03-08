@@ -8,9 +8,12 @@ import sys
 sys.path.append("Mask_RCNN")
 import random
 import numpy as np
+import pandas as pd
 import skimage
 import matplotlib
 import matplotlib.pyplot as plt
+from PIL import Image
+from skimage.morphology import label
 
 from config import Config
 import utils
@@ -24,7 +27,7 @@ ROOT_DIR = os.getcwd()
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
 # Directory to load source nuclei dataset(training)
-DATA_DIR = os.path.join(ROOT_DIR, "../dataset/stage1_train")
+DATA_TEST_DIR = os.path.join(ROOT_DIR, "../dataset/stage1_test")
 
 # Local path to trained weights file
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "Mask_RCNN/mask_rcnn_coco.h5")
@@ -68,153 +71,97 @@ class ShapesConfig(Config):
     # use small validation steps since the epoch is small
     VALIDATION_STEPS = 10   # 5
 
-config = ShapesConfig()
-
-
-class ShapesDataset(utils.Dataset):
-    """Generates the shapes synthetic dataset. The dataset consists of simple
-    shapes (triangles, squares, circles) placed randomly on a blank surface.
-    The images are generated on the fly. No file access required.
-    """
-
-
-    def load_shapes(self, count, image_ids):
-    # def load_shapes(self, count, height, width, image_ids):
-        """Generate the requested number of synthetic images.
-        count: number of images to generate.
-        height, width: the size of the generated images.
-        """
-        # Add classes
-        self.add_class("shapes", 1, "nuclei")
-
-        if not image_ids:
-            image_ids = os.listdir(DATA_DIR)
-        for index, item in enumerate(image_ids):
-            temp_image_path = "{0}/{1}/images/{1}.png".format(DATA_DIR, item)
-            # print(temp_image_path)
-            # break
-            self.add_image("shapes", image_id=index,
-                            kaggle_id=item,
-                            path=temp_image_path)
-
-
-    def load_image(self, image_id):
-        """Generate an image from the specs of the given image ID.
-        Typically this function loads the image from a file, but
-        in this case it generates the image on the fly from the
-        specs in image_info.
-        """
-
-
-        info = self.image_info[image_id]
-        image = plt.imread(info['path'])[:,:,:3]    # some image maybe 4 channels, need to fix it
-        return image
-
-
-    def image_reference(self, image_id):
-        """Return the shapes data of the image."""
-        info = self.image_info[image_id]
-        if info["source"] == "shapes":
-            return info["shapes"]
-        else:
-            super(self.__class__).image_reference(self, image_id)
-
-
-    def load_mask(self, image_id):
-        """Generate instance masks for shapes of the given image ID.
-        """
-        info = self.image_info[image_id]
-        count = 1
-        kaggle_id = info['kaggle_id']
-        mask_dir = "{0}/{1}/masks".format(DATA_DIR, kaggle_id)
-        masks_list = os.listdir(mask_dir)
-
-        count = len(masks_list)
-        temp_img = skimage.io.imread(mask_dir + "/" + masks_list[0])
-        mask = np.zeros([temp_img.shape[0], temp_img.shape[1], len(masks_list)])
-        for index, item in enumerate(masks_list):
-            temp_mask_path = "{}/{}".format(mask_dir, item)
-            mask[:, :, index:index+1] = skimage.io.imread(temp_mask_path)[:, : , np.newaxis]
-
-        # Handle occlusions
-        occlusion = np.logical_not(mask[:, :, -1]).astype(np.uint8)
-        for i in range(count-2, -1, -1):
-            mask[:, :, i] = mask[:, :, i] * occlusion
-            occlusion = np.logical_and(occlusion, np.logical_not(mask[:, :, i]))
-
-        # class_ids = np.array([1])
-        class_ids = np.array([1 for _ in range(0, count, 1)])
-        # mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB)
-        return mask, class_ids.astype(np.int32)
-
 
 class InferenceConfig(ShapesConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
 
-inference_config = InferenceConfig()
+config = InferenceConfig()
 
 
-def detect_nuclei():
+# Create model object in inference mode.
+model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
+
+# Get path to saved weights
+# Either set a specific path or find last trained weights
+# model_path = os.path.join(ROOT_DIR, ".h5 file name here")
+model_path = model.find_last()[1]
+
+# Load trained weights (fill in path to trained weights here)
+assert model_path != "", "Provide path to trained weights"
+print("Loading weights from ", model_path)
+model.load_weights(model_path, by_name=True)
+class_names = ['BG', 'nuclei']
+
+
+def detect_nuclei(image_id):
     """
     This function is used to detect nuclei by using Mask-RCNN model.
     """
 
-    # Recreate the model in inference mode
-    model = modellib.MaskRCNN(mode="inference",
-                              config=inference_config,
-                              model_dir=MODEL_DIR)
+    image = skimage.io.imread(os.path.join(DATA_TEST_DIR, '{0}/images/{0}.png'.format(image_id)))[:, :, :3]
 
-    # Get path to saved weights
-    # Either set a specific path or find last trained weights
-    # model_path = os.path.join(ROOT_DIR, ".h5 file name here")
-    model_path = model.find_last()[1]
+    # print(image.shape)
+    # Run detection
+    results = model.detect([image], verbose=1)
 
-    # Load trained weights (fill in path to trained weights here)
-    assert model_path != "", "Provide path to trained weights"
-    print("Loading weights from ", model_path)
-    model.load_weights(model_path, by_name=True)
+    # process result
+    # mask = results[0]['masks']
+    mask = np.sum(results[0]['masks'], -1)
+    # mask[mask != 0] = 1
+    # plt.imsave('./output/{}.png'.format(image_id), mask, cmap='binary')
+    return mask
 
-    # Test on a random image
-    image_id = random.choice(dataset_val.image_ids)
-    original_image, image_meta, gt_class_id, gt_bbox, gt_mask =\
-        modellib.load_image_gt(dataset_val, inference_config,
-                               image_id, use_mini_mask=False)
-
-    # log("original_image", original_image)
-    # log("image_meta", image_meta)
-    # log("gt_class_id", gt_class_id)
-    # log("gt_bbox", gt_bbox)
-    # log("gt_mask", gt_mask)
-
-    fig = plt.figure()
-    imshow = np.sum(gt_mask, -1)
-    print(imshow.shape)
-    plt.imshow(imshow, cmap='gray')
-    plt.show()
-    # visualize.display_instances(original_image, gt_bbox, gt_mask, gt_class_id,
-    #                         dataset_train.class_names, figsize=(8, 8))
+def process_result(mask):
+    '''
+    This function is used to encode the mask image.
+    Stolen from https://www.kaggle.com/rakhlin/fast-run-length-encoding-python
+        mask: mask image
+        return:
+            list: encoding list
+    '''
+    def rle_encoding(x):
+        dots = np.where(x.T.flatten() == 1)[0]
+        run_lengths = []
+        prev = -2
+        for b in dots:
+            if (b>prev+1):
+                run_lengths.extend((b + 1, 0))
+            run_lengths[-1] += 1
+            prev = b
+        return run_lengths
 
 
-def process_result():
-    pass
+    def prob_to_rles(x, cutoff=0.5):
+        lab_img = label(x > cutoff)
+        for i in range(1, lab_img.max() + 1):
+                yield rle_encoding(lab_img == i)
 
+    # inner_mask = plt.imread(os.path.join('./output', '{}.png'.format(image_id)))[:, :, 0]
+    # plt.imshow(mask, cmap='gray'), plt.axis('off')
+    # plt.show()
+    encode_result = list(prob_to_rles(mask))
+    return encode_result
 
 # split_training and testing set
-image_ids = os.listdir(DATA_DIR)
-np.random.shuffle(image_ids)
+image_ids = os.listdir(DATA_TEST_DIR)
 dtset_size = len(image_ids)
-training_ids = image_ids[:int(dtset_size*0.8)]
-testing_ids = image_ids[int(dtset_size*0.8):]
 
-# Training dataset
-dataset_train = ShapesDataset()
-dataset_train.load_shapes(len(training_ids), image_ids=training_ids)
-dataset_train.prepare()
+# init
+new_test_ids = []
+rles = []
 
-# Validation dataset
-dataset_val = ShapesDataset()
-dataset_val.load_shapes(len(testing_ids), image_ids=testing_ids)
-dataset_val.prepare()
+for index, image_id in enumerate(image_ids):
+    print(image_id)
+    mask = detect_nuclei(image_id)
+    encode_result = process_result(mask)
+    rles.extend(encode_result)
+    new_test_ids.extend([image_id] * len(encode_result))
 
-detect_nuclei()
+
+
+# Create submission DataFrame
+sub = pd.DataFrame()
+sub['ImageId'] = new_test_ids
+sub['EncodedPixels'] = pd.Series(rles).apply(lambda x: ' '.join(str(y) for y in x))
+sub.to_csv('sub-dsbowl2018-1.csv', index=False)

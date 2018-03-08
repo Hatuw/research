@@ -1,0 +1,9 @@
+logs/*
+<<<<<<< HEAD
+
+__pycache__/
+=======
+__pycache__
+.ipynb_checkpoints/*
+./output/*
+>>>>>>> 205e9184b62d14bde8f1a09d873ec5dd9b255c2f
