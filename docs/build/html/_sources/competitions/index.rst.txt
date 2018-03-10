@@ -39,9 +39,9 @@ TODO
 +==========================+=============+====================+
 |     mask-rcnn环境搭建    |      ✔      |                    |
 +--------------------------+-------------+--------------------+
-|     mask-rcnn training   |   进行中    |需要处理显存泄漏问题|
+|     mask-rcnn training   |      ✔      |                    |
 +--------------------------+-------------+--------------------+
-|            调参          |             |                    |
+|            调参          |   进行中    |                    |
 +--------------------------+-------------+--------------------+
 
 Notes
@@ -81,7 +81,7 @@ Notes
 
     CSDN上有个对第二个repo的踩坑记录(http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&fps=1)
 
-    ``Mask_RCNN/model.py`` 是Mask-RCNN的 **resnet101** 实现； ``Mask_RCNN/train_shapes.ipynb`` 是用自己数据集训练Mask_RCNN的一个demo，其中 ``ShapesDataset`` 类下的 ``load_image()`` 、 ``load_mask()`` 、``image_reference()`` 方法需要重写以向外提供数据。 ``poc/train_nuclei.py`` 就是将此project应用于检测细胞核的尝试。( `训练的时候要用一张显存较大的显卡，不然可能会内存泄漏。这里我先用google的colab(k80)训练试试` )
+    ``Mask_RCNN/model.py`` 是Mask-RCNN的 **resnet101** 实现； ``Mask_RCNN/train_shapes.ipynb`` 是用自己数据集训练Mask_RCNN的一个demo，其中 ``ShapesDataset`` 类下的 ``load_image()`` 、 ``load_mask()`` 、``image_reference()`` 方法需要重写以向外提供数据。 ``poc/train_nuclei.py`` 就是将此project应用于检测细胞核的尝试。
 
 
     - 下面是第一个repo的踩坑记录:
