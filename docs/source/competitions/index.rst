@@ -44,6 +44,12 @@ TODO
 |            调参          |   进行中    |                    |
 +--------------------------+-------------+--------------------+
 
+.. todo::
+    - [✔] 计算图像平均RGB值，并重新训练
+    - [x] Data Augmentation(需要解决images和多张masks不匹配问题)
+    - [x] 修改最后两层的初始化方法
+    - [x] 删除最后两层再进行训练
+
 Notes
 >>>>>>>>>>>>>>>>>>>
 
@@ -69,61 +75,18 @@ Notes
         :align: middle
 
     - Github repo:
-        1) https://github.com/CharlesShang/FastMaskRCNN (在windows下跑不通..)
-        2) https://github.com/matterport/Mask_RCNN (亲测可行)
+        https://github.com/matterport/Mask_RCNN (亲测可行)
 
-    先放个第二个repo的效果，第一个repo跑不通，踩坑记录在后面。
     |demo-mask-rcnn|
 
     .. |demo-mask-rcnn| image:: ../assets/demo-mask-rcnn.png
         :width: 700px
         :align: middle
 
-    CSDN上有个对第二个repo的踩坑记录(http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&fps=1)
+    CSDN上有个这个repo的踩坑记录(http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&fps=1)
 
     ``Mask_RCNN/model.py`` 是Mask-RCNN的 **resnet101** 实现； ``Mask_RCNN/train_shapes.ipynb`` 是用自己数据集训练Mask_RCNN的一个demo，其中 ``ShapesDataset`` 类下的 ``load_image()`` 、 ``load_mask()`` 、``image_reference()`` 方法需要重写以向外提供数据。 ``poc/train_nuclei.py`` 就是将此project应用于检测细胞核的尝试。
 
+- Data Augmentation
 
-    - 下面是第一个repo的踩坑记录:
-        - How-to:
-            1) Go to ``./libs/datasets/pycocotools`` and run ``make``
-            2) Download COCO dataset, place it into ``./data``, then run ``python download_and_convert_data.py`` to build tf-records. It takes a while.（要先解压）
-            3) Download pretrained resnet50 model, ``wget http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz``, unzip it, place it into ``./data/pretrained_models/``
-            4) Go to ``./libs`` and run ``make``
-            5) run ``python train/train.py`` for training
-
-        Windows平台下编译 `1.` 时需要先将 ``FastMaskRCNN\\libs\\datasets\\pycocotools`` 下的 ``setpy.py`` 的 ``-Wno-cpp`` 和 ``-Wno-unused-function`` 编译参数去掉（如下）
-        ::
-
-            ext_modules = [
-                Extension(
-                '_mask',
-                    sources=['./common/maskApi.c', '_mask.pyx'],
-                    include_dirs = [np.get_include(), './common'],
-                    extra_compile_args=['-std=c99'],
-                )
-            ]
-
-        另外，运行 ``python download_and_convert_data.py`` 时可能会遇到以下报错：
-        ::
-
-            Gray Image 287422
-            >> Converting image 23701/82783 shard 9
-            >> Converting image 23751/82783 shard 9
-            >> Converting image 23801/82783 shard 9
-            Traceback (most recent call last):
-              File "download_and_convert_data.py", line 39, in <module>
-                tf.app.run()
-              File "D:\Python\Python35\lib\site-packages\tensorflow\python\platform\app.py", line 48, in run
-                _sys.exit(main(_sys.argv[:1] + flags_passthrough))
-              File "download_and_convert_data.py", line 33, in main
-                download_and_convert_coco.run(FLAGS.dataset_dir, FLAGS.dataset_split_name)
-              File "E:\research\poc\FastMaskRCNN\libs\datasets\download_and_convert_coco.py", line 457, in run
-                dataset_split_name)
-              File "E:\research\poc\FastMaskRCNN\libs\datasets\download_and_convert_coco.py", line 303, in _add_to_tfrecord
-                img = img.astype(np.uint8)
-            TypeError: int() argument must be a string, a bytes-like object or a number, not 'JpegImageFile'
-
-        关于这个Issue可以看这里：https://github.com/CharlesShang/FastMaskRCNN/issues/33, 其中一个解决方法就是将 ``[296]: img = np.array(Image.open(img_name))`` 改成 ``[296]: img = np.array(Image.open(img_name), dtype=np.uint8)`` （不过还是解决不了⊙﹏⊙，有可能是数据集的问题）
-
-
+    由于数据集太小，在此对Data做Agumentation以扩大Dataset

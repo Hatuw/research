@@ -214,6 +214,15 @@
 </tr>
 </tbody>
 </table>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">待处理</p>
+<ul class="last simple">
+<li>[✔] 计算图像平均RGB值，并重新训练</li>
+<li>[x] Data Augmentation(需要解决images和多张masks不匹配问题)</li>
+<li>[x] 修改最后两层的初始化方法</li>
+<li>[x] 删除最后两层再进行训练</li>
+</ul>
+</div>
 </div>
 <div class="section" id="notes">
 <h3>Notes<a class="headerlink" href="#notes" title="永久链接至标题">¶</a></h3>
@@ -234,72 +243,20 @@
 <ul class="simple">
 <li><dl class="first docutils">
 <dt>Github repo:</dt>
-<dd><ol class="first last arabic">
-<li><a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN">https://github.com/CharlesShang/FastMaskRCNN</a> (在windows下跑不通..)</li>
-<li><a class="reference external" href="https://github.com/matterport/Mask_RCNN">https://github.com/matterport/Mask_RCNN</a> (亲测可行)</li>
-</ol>
-</dd>
+<dd><a class="reference external" href="https://github.com/matterport/Mask_RCNN">https://github.com/matterport/Mask_RCNN</a> (亲测可行)</dd>
 </dl>
 </li>
 </ul>
-<p>先放个第二个repo的效果，第一个repo跑不通，踩坑记录在后面。
-<a class="reference internal" href="../_images/demo-mask-rcnn.png"><img alt="demo-mask-rcnn" class="align-middle" src="../_images/demo-mask-rcnn.png" style="width: 700px;" /></a></p>
-<p>CSDN上有个对第二个repo的踩坑记录(<a class="reference external" href="http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&amp;fps=1">http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&amp;fps=1</a>)</p>
-<p><code class="docutils literal"><span class="pre">Mask_RCNN/model.py</span></code> 是Mask-RCNN的 <strong>resnet101</strong> 实现； <code class="docutils literal"><span class="pre">Mask_RCNN/train_shapes.ipynb</span></code> 是用自己数据集训练Mask_RCNN的一个demo，其中 <code class="docutils literal"><span class="pre">ShapesDataset</span></code> 类下的 <code class="docutils literal"><span class="pre">load_image()</span></code> 、 <code class="docutils literal"><span class="pre">load_mask()</span></code> 、<code class="docutils literal"><span class="pre">image_reference()</span></code> 方法需要重写以向外提供数据。 <code class="docutils literal"><span class="pre">poc/train_nuclei.py</span></code> 就是将此project应用于检测细胞核的尝试。</p>
-<ul class="last">
-<li><dl class="first docutils">
-<dt>下面是第一个repo的踩坑记录:</dt>
-<dd><ul class="first simple">
-<li><dl class="first docutils">
-<dt>How-to:</dt>
-<dd><ol class="first last arabic">
-<li>Go to <code class="docutils literal"><span class="pre">./libs/datasets/pycocotools</span></code> and run <code class="docutils literal"><span class="pre">make</span></code></li>
-<li>Download COCO dataset, place it into <code class="docutils literal"><span class="pre">./data</span></code>, then run <code class="docutils literal"><span class="pre">python</span> <span class="pre">download_and_convert_data.py</span></code> to build tf-records. It takes a while.（要先解压）</li>
-<li>Download pretrained resnet50 model, <code class="docutils literal"><span class="pre">wget</span> <span class="pre">http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz</span></code>, unzip it, place it into <code class="docutils literal"><span class="pre">./data/pretrained_models/</span></code></li>
-<li>Go to <code class="docutils literal"><span class="pre">./libs</span></code> and run <code class="docutils literal"><span class="pre">make</span></code></li>
-<li>run <code class="docutils literal"><span class="pre">python</span> <span class="pre">train/train.py</span></code> for training</li>
-</ol>
+<p><a class="reference internal" href="../_images/demo-mask-rcnn.png"><img alt="demo-mask-rcnn" class="align-middle" src="../_images/demo-mask-rcnn.png" style="width: 700px;" /></a></p>
+<p>CSDN上有个这个repo的踩坑记录(<a class="reference external" href="http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&amp;fps=1">http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&amp;fps=1</a>)</p>
+<p class="last"><code class="docutils literal"><span class="pre">Mask_RCNN/model.py</span></code> 是Mask-RCNN的 <strong>resnet101</strong> 实现； <code class="docutils literal"><span class="pre">Mask_RCNN/train_shapes.ipynb</span></code> 是用自己数据集训练Mask_RCNN的一个demo，其中 <code class="docutils literal"><span class="pre">ShapesDataset</span></code> 类下的 <code class="docutils literal"><span class="pre">load_image()</span></code> 、 <code class="docutils literal"><span class="pre">load_mask()</span></code> 、<code class="docutils literal"><span class="pre">image_reference()</span></code> 方法需要重写以向外提供数据。 <code class="docutils literal"><span class="pre">poc/train_nuclei.py</span></code> 就是将此project应用于检测细胞核的尝试。</p>
 </dd>
 </dl>
 </li>
-</ul>
-<p>Windows平台下编译 <cite>1.</cite> 时需要先将 <code class="docutils literal"><span class="pre">FastMaskRCNN\\libs\\datasets\\pycocotools</span></code> 下的 <code class="docutils literal"><span class="pre">setpy.py</span></code> 的 <code class="docutils literal"><span class="pre">-Wno-cpp</span></code> 和 <code class="docutils literal"><span class="pre">-Wno-unused-function</span></code> 编译参数去掉（如下）</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">Extension</span><span class="p">(</span>
-    <span class="s1">&#39;_mask&#39;</span><span class="p">,</span>
-        <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;./common/maskApi.c&#39;</span><span class="p">,</span> <span class="s1">&#39;_mask.pyx&#39;</span><span class="p">],</span>
-        <span class="n">include_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">get_include</span><span class="p">(),</span> <span class="s1">&#39;./common&#39;</span><span class="p">],</span>
-        <span class="n">extra_compile_args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-std=c99&#39;</span><span class="p">],</span>
-    <span class="p">)</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<p>另外，运行 <code class="docutils literal"><span class="pre">python</span> <span class="pre">download_and_convert_data.py</span></code> 时可能会遇到以下报错：</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Gray</span> <span class="n">Image</span> <span class="mi">287422</span>
-<span class="o">&gt;&gt;</span> <span class="n">Converting</span> <span class="n">image</span> <span class="mi">23701</span><span class="o">/</span><span class="mi">82783</span> <span class="n">shard</span> <span class="mi">9</span>
-<span class="o">&gt;&gt;</span> <span class="n">Converting</span> <span class="n">image</span> <span class="mi">23751</span><span class="o">/</span><span class="mi">82783</span> <span class="n">shard</span> <span class="mi">9</span>
-<span class="o">&gt;&gt;</span> <span class="n">Converting</span> <span class="n">image</span> <span class="mi">23801</span><span class="o">/</span><span class="mi">82783</span> <span class="n">shard</span> <span class="mi">9</span>
-<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s2">&quot;download_and_convert_data.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">39</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-    <span class="n">tf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-  <span class="n">File</span> <span class="s2">&quot;D:\Python\Python35\lib\site-packages</span><span class="se">\t</span><span class="s2">ensorflow\python\platform</span><span class="se">\a</span><span class="s2">pp.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">48</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run</span>
-    <span class="n">_sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">_sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">flags_passthrough</span><span class="p">))</span>
-  <span class="n">File</span> <span class="s2">&quot;download_and_convert_data.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">33</span><span class="p">,</span> <span class="ow">in</span> <span class="n">main</span>
-    <span class="n">download_and_convert_coco</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">FLAGS</span><span class="o">.</span><span class="n">dataset_dir</span><span class="p">,</span> <span class="n">FLAGS</span><span class="o">.</span><span class="n">dataset_split_name</span><span class="p">)</span>
-  <span class="n">File</span> <span class="s2">&quot;E:</span><span class="se">\r</span><span class="s2">esearch\poc\FastMaskRCNN\libs\datasets\download_and_convert_coco.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">457</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run</span>
-    <span class="n">dataset_split_name</span><span class="p">)</span>
-  <span class="n">File</span> <span class="s2">&quot;E:</span><span class="se">\r</span><span class="s2">esearch\poc\FastMaskRCNN\libs\datasets\download_and_convert_coco.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">303</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_add_to_tfrecord</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-<span class="ne">TypeError</span><span class="p">:</span> <span class="nb">int</span><span class="p">()</span> <span class="n">argument</span> <span class="n">must</span> <span class="n">be</span> <span class="n">a</span> <span class="n">string</span><span class="p">,</span> <span class="n">a</span> <span class="nb">bytes</span><span class="o">-</span><span class="n">like</span> <span class="nb">object</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">number</span><span class="p">,</span> <span class="ow">not</span> <span class="s1">&#39;JpegImageFile&#39;</span>
-</pre></div>
-</div>
-<p class="last">关于这个Issue可以看这里：<a class="reference external" href="https://github.com/CharlesShang/FastMaskRCNN/issues/33">https://github.com/CharlesShang/FastMaskRCNN/issues/33</a>, 其中一个解决方法就是将 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name))</span></code> 改成 <code class="docutils literal"><span class="pre">[296]:</span> <span class="pre">img</span> <span class="pre">=</span> <span class="pre">np.array(Image.open(img_name),</span> <span class="pre">dtype=np.uint8)</span></code> （不过还是解决不了⊙﹏⊙，有可能是数据集的问题）</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-</dl>
+<li><p class="first">Data Augmentation</p>
+<blockquote>
+<div><p>由于数据集太小，在此对Data做Agumentation以扩大Dataset</p>
+</div></blockquote>
 </li>
 </ul>
 </div>
