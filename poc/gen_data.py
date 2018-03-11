@@ -39,32 +39,43 @@ for mask_id in mask_ids:
 # plt.imshow(total_mask, cmap='gray')
 # plt.show()
 y = img_to_array(total_mask)
-print(y.shape)
+# print(y.shape)
 y = y.reshape((1,) + y.shape)
-print(y.shape)
+# print(y.shape)
 
 img = load_img(test_img)  # this is a PIL image
 x = img_to_array(img)  # this is a Numpy array with shape (3, 150, 150)
-print(x.shape)
+# print(x.shape)
 x = x.reshape((1,) + x.shape)  # this is a Numpy array with shape (1, 3, 150, 150)
-print(x.shape)
+# print(x.shape)
 
 seed = 1
 image_datagen.fit(x, augment=True, seed=seed)
 mask_datagen.fit(y, augment=True, seed=seed)
+mask_batch = len(os.listdir(mask_path))
+image_generator = image_datagen.flow_from_directory(os.path.join(DATA_DIR, test_id, 'images'),
+                                                    save_to_dir='augmentation',
+                                                    save_prefix='image', save_format='png',
+                                                    seed=seed)
+# image_generator = image_datagen.flow(x, batch_size=1,
+#                                     save_to_dir='augmentation',
+#                                     save_prefix='image', save_format='png',
+#                                     seed=seed)
+mask_generator = mask_datagen.flow_from_directory(mask_path,
+                                                save_to_dir='augmentation',
+                                                save_prefix='mask', save_format='png',
+                                                seed=seed)
+# mask_generator = mask_datagen.flow(y, batch_size=1,
+#                                     save_to_dir='augmentation',
+#                                     save_prefix='mask', save_format='png',
+#                                     seed=seed)
 
-image_generator = image_datagen.flow(x, batch_size=1,
-                                    save_to_dir='augmentation',
-                                    save_prefix='image', save_format='png')
-mask_generator = mask_datagen.flow(y, batch_size=1,
-                                    save_to_dir='augmentation',
-                                    save_prefix='mask', save_format='png')
 train_generator = zip(image_generator, mask_generator)
 
 i = 0
 for batch_x, batch_y in train_generator:
     i += 1
-    if i > 2:
+    if i > 0:
         break  # otherwise the generator would loop indefinitely
 
 # the .flow() command below generates batches of randomly transformed images
