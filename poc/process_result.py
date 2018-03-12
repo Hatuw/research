@@ -55,30 +55,34 @@ class ShapesConfig(Config):
 
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
-    IMAGE_MIN_DIM = 128
+    IMAGE_MIN_DIM = 512
     IMAGE_MAX_DIM = 512 # 128
 
+    # Image mean (RGB)
+    # MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
+
     # Use smaller anchors because our image and objects are small
-    RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)  # anchor side in pixels
+    RPN_ANCHOR_SCALES = (4, 8, 16, 32, 64)  # anchor side in pixels
 
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
     TRAIN_ROIS_PER_IMAGE = 200  # 100
 
     # Use a small epoch since the data is simple
-    STEPS_PER_EPOCH = 200   # 100
+    STEPS_PER_EPOCH = 100   # 100
 
     # use small validation steps since the epoch is small
-    VALIDATION_STEPS = 10   # 5
+    VALIDATION_STEPS = 20   # 5
 
 
 class InferenceConfig(ShapesConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
-    USE_MINI_MASK = False
+    # USE_MINI_MASK = False
     # MINI_MASK_SHAPE = (1, 1)
 
 config = InferenceConfig()
+# config.display()
 
 
 # Create model object in inference mode.
@@ -96,6 +100,18 @@ model.load_weights(model_path, by_name=True)
 class_names = ['BG', 'nuclei']
 
 
+def get_ax(rows=1, cols=1, size=8):
+    """Return a Matplotlib Axes array to be used in
+    all visualizations in the notebook. Provide a
+    central point to control graph sizes.
+
+    Change the default size attribute to control the size
+    of rendered images
+    """
+    _, ax = plt.subplots(rows, cols, figsize=(size * cols, size * rows))
+    return ax
+
+
 def detect_nuclei(image_id):
     """
     This function is used to detect nuclei by using Mask-RCNN model.
@@ -106,11 +122,16 @@ def detect_nuclei(image_id):
     # print(image.shape)
     # Run detection
     results = model.detect([image], verbose=1)
-    print(results)
+    # print(results)
 
     # process result
     # mask = results[0]['masks']
     mask = np.sum(results[0]['masks'], -1)
+
+    # r = results[0]
+    # visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'], ax=get_ax())
+    # exit()
+
     mask[mask != 0] = 1
     plt.imsave('./output/{}.png'.format(image_id), 1.-mask, cmap='binary')
     return mask
