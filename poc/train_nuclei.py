@@ -46,7 +46,7 @@ class ShapesConfig(Config):
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 8  # 8
+    IMAGES_PER_GPU = 2  # 8
 
     # Number of classes (including background)
     # NUM_CLASSES = 1 + 3  # background + 3 shapes
@@ -54,14 +54,14 @@ class ShapesConfig(Config):
 
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
-    IMAGE_MIN_DIM = 256 # 128
-    IMAGE_MAX_DIM = 512 # 128
+    IMAGE_MIN_DIM = 512 # 128
+    IMAGE_MAX_DIM = 1024 # 128
 
     USE_MINI_MASK = True
     MINI_MASK_SHAPE = (56, 56)  # (height, width) of the mini-mask
 
     # You can reduce this during training to generate more propsals.
-    RPN_NMS_THRESHOLD = 0.3 # 0.7
+    RPN_NMS_THRESHOLD = 0.5 # 0.7
 
     # Image mean (RGB)
     # MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
@@ -78,7 +78,7 @@ class ShapesConfig(Config):
     STEPS_PER_EPOCH = 100   # 100
 
     # use small validation steps since the epoch is small
-    VALIDATION_STEPS = 20   # 5
+    VALIDATION_STEPS = 10   # 5
 
 
 config = ShapesConfig()
@@ -188,7 +188,7 @@ image_ids = os.listdir(DATA_DIR)
 np.random.shuffle(image_ids)
 dtset_size = len(image_ids)
 training_ids = image_ids[:int(dtset_size*0.8)]
-testing_ids = image_ids[int(dtset_size*0.8):]
+testing_ids = image_ids[int(dtset_size*0.2):]
 
 # Training dataset
 dataset_train = ShapesDataset()

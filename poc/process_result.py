@@ -72,7 +72,7 @@ class ShapesConfig(Config):
     STEPS_PER_EPOCH = 100   # 100
 
     # use small validation steps since the epoch is small
-    VALIDATION_STEPS = 20   # 5
+    VALIDATION_STEPS = 10   # 5
 
 
 class InferenceConfig(ShapesConfig):
@@ -185,4 +185,4 @@ for index, image_id in enumerate(image_ids):
 sub = pd.DataFrame()
 sub['ImageId'] = new_test_ids
 sub['EncodedPixels'] = pd.Series(rles).apply(lambda x: ' '.join(str(y) for y in x))
-sub.to_csv('sub-dsbowl2018-7.csv', index=False)
+sub.to_csv('sub-dsbowl2018-10.csv', index=False)
