@@ -33,6 +33,8 @@ COCO_MODEL_PATH = os.path.join(ROOT_DIR, "Mask_RCNN/mask_rcnn_coco.h5")
 if not os.path.exists(COCO_MODEL_PATH):
     utils.download_trained_weights(COCO_MODEL_PATH)
 
+TRAINING = True
+
 class ShapesConfig(Config):
     """Configuration for training on the toy shapes dataset.
     Derives from the base Config class and overrides values specific
@@ -44,7 +46,7 @@ class ShapesConfig(Config):
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 4  # 8
+    IMAGES_PER_GPU = 8  # 8
 
     # Number of classes (including background)
     # NUM_CLASSES = 1 + 3  # background + 3 shapes
@@ -52,13 +54,14 @@ class ShapesConfig(Config):
 
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
-    IMAGE_MIN_DIM = 512 # 128
+    IMAGE_MIN_DIM = 256 # 128
     IMAGE_MAX_DIM = 512 # 128
 
-    MINI_MASK_SHAPE = (32, 32)  # (height, width) of the mini-mask
+    USE_MINI_MASK = True
+    MINI_MASK_SHAPE = (56, 56)  # (height, width) of the mini-mask
 
     # You can reduce this during training to generate more propsals.
-    RPN_NMS_THRESHOLD = 0.5 # 0.7
+    RPN_NMS_THRESHOLD = 0.3 # 0.7
 
     # Image mean (RGB)
     # MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
@@ -112,21 +115,12 @@ class ShapesDataset(utils.Dataset):
         height, width: the size of the generated images.
         """
         # Add classes
-        # self.add_class("shapes", 1, "square")
-        # self.add_class("shapes", 2, "circle")
-        # self.add_class("shapes", 3, "triangle")
         self.add_class("shapes", 1, "nuclei")
 
         # Add images
         # Generate random specifications of images (i.e. color and
         # list of shapes sizes and locations). This is more compact than
         # actual images. Images are generated on the fly in load_image().
-        # for i in range(count):
-        #     bg_color, shapes = self.random_image(height, width)
-        #     self.add_image("shapes", image_id=i, path=None,
-        #                    width=width, height=height,
-        #                    bg_color=bg_color, shapes=shapes)
-
         if not image_ids:
             image_ids = os.listdir(DATA_DIR)
         for index, item in enumerate(image_ids):
@@ -144,15 +138,6 @@ class ShapesDataset(utils.Dataset):
         in this case it generates the image on the fly from the
         specs in image_info.
         """
-
-        # info = self.image_info[image_id]
-        # bg_color = np.array(info['bg_color']).reshape([1, 1, 3])
-        # image = np.ones([info['height'], info['width'], 3], dtype=np.uint8)
-        # image = image * bg_color.astype(np.uint8)
-        # for shape, color, dims in info['shapes']:
-        #     image = self.draw_shape(image, shape, dims, color)
-        # return image
-
         info = self.image_info[image_id]
         image = plt.imread(info['path'])[:,:,:3]    # some image maybe 4 channels, need to fix it
         return image
@@ -168,22 +153,6 @@ class ShapesDataset(utils.Dataset):
     def load_mask(self, image_id):
         """Generate instance masks for shapes of the given image ID.
         """
-        # info = self.image_info[image_id]
-        # shapes = info['shapes']
-        # count = len(shapes)
-        # mask = np.zeros([info['height'], info['width'], count], dtype=np.uint8)
-        # for i, (shape, _, dims) in enumerate(info['shapes']):
-        #     mask[:, :, i:i+1] = self.draw_shape(mask[:, :, i:i+1].copy(),
-        #                                         shape, dims, 1)
-        # # Handle occlusions
-        # occlusion = np.logical_not(mask[:, :, -1]).astype(np.uint8)
-        # for i in range(count-2, -1, -1):
-        #     mask[:, :, i] = mask[:, :, i] * occlusion
-        #     occlusion = np.logical_and(occlusion, np.logical_not(mask[:, :, i]))
-        # # Map class names to class IDs.
-        # class_ids = np.array([self.class_names.index(s[0]) for s in shapes])
-        # return mask, class_ids.astype(np.int32)
-
         info = self.image_info[image_id]
         count = 1
         kaggle_id = info['kaggle_id']
@@ -264,35 +233,35 @@ elif init_with == "last":
     # Load the last model you trained and continue training
     model.load_weights(model.find_last()[1], by_name=True)
 
-
-# Train the head branches
-# Passing layers="heads" freezes all layers except the head
-# layers. You can also pass a regular expression to select
-# which layers to train by name pattern.
-model.train(dataset_train, dataset_val,
-            learning_rate=config.LEARNING_RATE,
-            epochs=4,
-            layers='heads')
-# epochs 1
-
-
-# Fine tune all layers
-# Passing layers="all" trains all layers. You can also
-# pass a regular expression to select which layers to
-# train by name pattern.
-# learning_rate = 0.0001
-model.train(dataset_train, dataset_val,
-            learning_rate=config.LEARNING_RATE / 10,
-            epochs=8,
-            layers="all")
-# epochs 2
+if TRAINING:
+    # Train the head branches
+    # Passing layers="heads" freezes all layers except the head
+    # layers. You can also pass a regular expression to select
+    # which layers to train by name pattern.
+    model.train(dataset_train, dataset_val,
+                learning_rate=config.LEARNING_RATE,
+                epochs=4,
+                layers='heads')
+    # epochs 1
 
 
-# Save weights
-# Typically not needed because callbacks save after every epoch
-# Uncomment to save manually
-# model_path = os.path.join(MODEL_DIR, "mask_rcnn_shapes.h5")
-# model.keras_model.save_weights(model_path)
+    # Fine tune all layers
+    # Passing layers="all" trains all layers. You can also
+    # pass a regular expression to select which layers to
+    # train by name pattern.
+    # learning_rate = 0.0001
+    model.train(dataset_train, dataset_val,
+                learning_rate=config.LEARNING_RATE / 10,
+                epochs=8,
+                layers="all")
+    # epochs 2
+
+
+    # Save weights
+    # Typically not needed because callbacks save after every epoch
+    # Uncomment to save manually
+    # model_path = os.path.join(MODEL_DIR, "mask_rcnn_shapes.h5")
+    # model.keras_model.save_weights(model_path)
 
 
 class InferenceConfig(ShapesConfig):
@@ -323,11 +292,11 @@ original_image, image_meta, gt_class_id, gt_bbox, gt_mask =\
     modellib.load_image_gt(dataset_val, inference_config,
                            image_id, use_mini_mask=False)
 
-log("original_image", original_image)
-log("image_meta", image_meta)
-log("gt_class_id", gt_class_id)
-log("gt_bbox", gt_bbox)
-log("gt_mask", gt_mask)
+# log("original_image", original_image)
+# log("image_meta", image_meta)
+# log("gt_class_id", gt_class_id)
+# log("gt_bbox", gt_bbox)
+# log("gt_mask", gt_mask)
 
 # visualize.display_instances(original_image, gt_bbox, gt_mask, gt_class_id,
 #                             dataset_train.class_names, figsize=(8, 8))
@@ -364,39 +333,27 @@ print("mAP: ", np.mean(APs))
 
 # Compute training mAP and validating map
 # !!!The code in this need to be combined
+def cal_map(dtset_ids, dtset):
+    APs = []
+    for image_id in dtset_ids:
+        # Load image and ground truth data
+        image, image_meta, gt_class_id, gt_bbox, gt_mask = \
+            modellib.load_image_gt(dtset, inference_config,
+                                   image_id, use_mini_mask=False)
+        molded_images = np.expand_dims(modellib.mold_image(image, inference_config), 0)
+        # Run object detection
+        results = model.detect([image], verbose=0)
+        r = results[0]
+        # Compute AP
+        AP, precisions, recalls, overlaps = \
+            utils.compute_ap(gt_bbox, gt_class_id, gt_mask,
+                             r["rois"], r["class_ids"], r["scores"], r['masks'])
+        APs.append(AP)
+        return APs
+
 # training mAP
-APs = []
-for image_id in training_ids:
-    # Load image and ground truth data
-    image, image_meta, gt_class_id, gt_bbox, gt_mask = \
-        modellib.load_image_gt(dataset_train, inference_config,
-                               image_id, use_mini_mask=False)
-    molded_images = np.expand_dims(modellib.mold_image(image, inference_config), 0)
-    # Run object detection
-    results = model.detect([image], verbose=0)
-    r = results[0]
-    # Compute AP
-    AP, precisions, recalls, overlaps = \
-        utils.compute_ap(gt_bbox, gt_class_id, gt_mask,
-                         r["rois"], r["class_ids"], r["scores"], r['masks'])
-    APs.append(AP)
-
-print("Training mAP: ", np.mean(APs))
+traning_aps = cal_map(dataset_train.image_ids, dataset_train)
+print("Training mAP: ", np.mean(traning_aps))
 # validating mAP
-APs = []
-for image_id in testing_ids:
-    # Load image and ground truth data
-    image, image_meta, gt_class_id, gt_bbox, gt_mask = \
-        modellib.load_image_gt(dataset_val, inference_config,
-                               image_id, use_mini_mask=False)
-    molded_images = np.expand_dims(modellib.mold_image(image, inference_config), 0)
-    # Run object detection
-    results = model.detect([image], verbose=0)
-    r = results[0]
-    # Compute AP
-    AP, precisions, recalls, overlaps = \
-        utils.compute_ap(gt_bbox, gt_class_id, gt_mask,
-                         r["rois"], r["class_ids"], r["scores"], r['masks'])
-    APs.append(AP)
-
-print("Validating mAP: ", np.mean(APs))
+validating_aps = cal_map(dataset_val.image_ids, dataset_val)
+print("Validating mAP: ", np.mean(validating_aps))

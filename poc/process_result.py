@@ -56,13 +56,13 @@ class ShapesConfig(Config):
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
     IMAGE_MIN_DIM = 512
-    IMAGE_MAX_DIM = 512 # 128
+    IMAGE_MAX_DIM = 1024 # 128
 
     # Image mean (RGB)
     # MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
 
     # Use smaller anchors because our image and objects are small
-    RPN_ANCHOR_SCALES = (4, 8, 16, 32, 64)  # anchor side in pixels
+    RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)  # anchor side in pixels
 
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
@@ -78,7 +78,7 @@ class ShapesConfig(Config):
 class InferenceConfig(ShapesConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
-    # USE_MINI_MASK = False
+    USE_MINI_MASK = False
     # MINI_MASK_SHAPE = (1, 1)
 
 config = InferenceConfig()
@@ -185,4 +185,4 @@ for index, image_id in enumerate(image_ids):
 sub = pd.DataFrame()
 sub['ImageId'] = new_test_ids
 sub['EncodedPixels'] = pd.Series(rles).apply(lambda x: ' '.join(str(y) for y in x))
-sub.to_csv('sub-dsbowl2018-5.csv', index=False)
+sub.to_csv('sub-dsbowl2018-7.csv', index=False)
