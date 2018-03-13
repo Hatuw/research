@@ -58,21 +58,26 @@ http://keras-cn.readthedocs.io/en/latest/preprocessing/image/
 
 **!!!实验设置和结果需要详细记录**
 
-    - 目前用以下设置跑出来的结果最好:(`shapes20180312T1746`)
+    - 目前用以下设置跑出来的结果最好, Kaggle 排名679左右(`shapes20180313T1225`).
 
 >>> \
 class ShapesConfig(Config):
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 4
+    IMAGES_PER_GPU = 2
     NUM_CLASSES = 1 + 1
     IMAGE_MIN_DIM = 512
-    IMAGE_MAX_DIM = 512
-    MINI_MASK_SHAPE = (32, 32)
+    IMAGE_MAX_DIM = 1024
+    MINI_MASK_SHAPE = (56, 56)
     RPN_NMS_THRESHOLD = 0.5
     RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)
     TRAIN_ROIS_PER_IMAGE = 200
     STEPS_PER_EPOCH = 100
     VALIDATION_STEPS = 20
+# Training mAP: 1.0
+# Validating mAP: 0.986013990182143
+(Overfit)
+
+
 
     - 训练集的Mean RGB为 ``MEAN_PIXEL = np.array([44.5, 40.7, 48.6])`` , 但是用这个设置跑出来的结果反而更差
 

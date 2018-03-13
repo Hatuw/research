@@ -232,22 +232,24 @@
 <p><strong>!!!实验设置和结果需要详细记录</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li>目前用以下设置跑出来的结果最好:(<cite>shapes20180312T1746</cite>)</li>
+<li>目前用以下设置跑出来的结果最好:(<cite>shapes20180313T1225</cite>)</li>
 </ul>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span>\
 <span class="go">class ShapesConfig(Config):</span>
 <span class="go">    GPU_COUNT = 1</span>
-<span class="go">    IMAGES_PER_GPU = 4</span>
+<span class="go">    IMAGES_PER_GPU = 2</span>
 <span class="go">    NUM_CLASSES = 1 + 1</span>
 <span class="go">    IMAGE_MIN_DIM = 512</span>
-<span class="go">    IMAGE_MAX_DIM = 512</span>
-<span class="go">    MINI_MASK_SHAPE = (32, 32)</span>
+<span class="go">    IMAGE_MAX_DIM = 1024</span>
+<span class="go">    MINI_MASK_SHAPE = (56, 56)</span>
 <span class="go">    RPN_NMS_THRESHOLD = 0.5</span>
 <span class="go">    RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)</span>
 <span class="go">    TRAIN_ROIS_PER_IMAGE = 200</span>
 <span class="go">    STEPS_PER_EPOCH = 100</span>
 <span class="go">    VALIDATION_STEPS = 20</span>
+<span class="go"># Training mAP: 1.0</span>
+<span class="go"># Validating mAP: 0.986013990182143</span>
 </pre></div>
 </div>
 <blockquote>
