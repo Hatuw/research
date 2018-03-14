@@ -4,6 +4,8 @@ Competitions Notes
 Kaggle 细胞核识别
 -------------------
 
+:doc:`details` :一些Introduction, Related work...
+
 Introduction
 >>>>>>>>>>>>>>>>>>>
 
@@ -58,7 +60,7 @@ http://keras-cn.readthedocs.io/en/latest/preprocessing/image/
 
 **!!!实验设置和结果需要详细记录**
 
-    - 目前用以下设置跑出来的结果最好:(`shapes20180313T1225`)
+    - 目前用以下设置跑出来的结果最好, Kaggle 排名469左右(`shapes20180314T1748`).
 
 >>> \
 class ShapesConfig(Config):
@@ -66,17 +68,23 @@ class ShapesConfig(Config):
     IMAGES_PER_GPU = 2
     NUM_CLASSES = 1 + 1
     IMAGE_MIN_DIM = 512
-    IMAGE_MAX_DIM = 1024
+    IMAGE_MAX_DIM = 512
+    USE_MINI_MASK = True
     MINI_MASK_SHAPE = (56, 56)
     RPN_NMS_THRESHOLD = 0.5
+    RPN_TRAIN_ANCHORS_PER_IMAGE = 320   # 256
+    POST_NMS_ROIS_TRAINING = 2000
+    POST_NMS_ROIS_INFERENCE = 2000
+    MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
+    MAX_GT_INSTANCES = 256
+    DETECTION_MAX_INSTANCES = 400
     RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)
-    TRAIN_ROIS_PER_IMAGE = 200
-    STEPS_PER_EPOCH = 100
-    VALIDATION_STEPS = 20
-# Training mAP: 1.0
-# Validating mAP: 0.986013990182143
-
-
+    TRAIN_ROIS_PER_IMAGE = 512
+    STEPS_PER_EPOCH = 300
+    VALIDATION_STEPS = 70
+# Training mAP: 0.9714530196558473
+# Validating mAP: 0.960999267232544
+# LB: 0.355
 
     - 训练集的Mean RGB为 ``MEAN_PIXEL = np.array([44.5, 40.7, 48.6])`` , 但是用这个设置跑出来的结果反而更差
 
@@ -113,7 +121,11 @@ Notes
         :width: 700px
         :align: middle
 
-    CSDN上有个这个repo的踩坑记录(http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&fps=1)
+    - CSDN上有个这个repo的踩坑记录(http://blog.csdn.net/u011974639/article/details/78483779?locationNum=9&fps=1)
+
+    - Github上有个Mask-RCN的细胞核检测Baseline(https://github.com/killthekitten/kaggle-ds-bowl-2018-baseline)
+
+    - Kaggle上面有个kernel用Mask-RCNN加上其他一些trick的,目前排名第七(https://www.kaggle.com/c/data-science-bowl-2018/discussion/50795)
 
     ``Mask_RCNN/model.py`` 是Mask-RCNN的 **resnet101** 实现； ``Mask_RCNN/train_shapes.ipynb`` 是用自己数据集训练Mask_RCNN的一个demo，其中 ``ShapesDataset`` 类下的 ``load_image()`` 、 ``load_mask()`` 、``image_reference()`` 方法需要重写以向外提供数据。 ``poc/train_nuclei.py`` 就是将此project应用于检测细胞核的尝试。
 

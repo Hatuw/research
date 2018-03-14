@@ -12,6 +12,7 @@ Research Notes
    :glob:
 
    competitions/index
+   competitions/details
    blockchain/index
    cryptology/index
    bmvc2018/index
