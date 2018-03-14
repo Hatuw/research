@@ -56,7 +56,11 @@ class ShapesConfig(Config):
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
     IMAGE_MIN_DIM = 512
-    IMAGE_MAX_DIM = 1024 # 128
+    IMAGE_MAX_DIM = 512 # 128
+
+    # ROIs kept after non-maximum supression (training and inference)
+    POST_NMS_ROIS_TRAINING = 2000
+    POST_NMS_ROIS_INFERENCE = 2000
 
     # Image mean (RGB)
     # MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
@@ -66,7 +70,10 @@ class ShapesConfig(Config):
 
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
-    TRAIN_ROIS_PER_IMAGE = 200  # 100
+    TRAIN_ROIS_PER_IMAGE = 512  # 100
+
+    # Max number of final detections
+    DETECTION_MAX_INSTANCES = 400   # 100
 
     # Use a small epoch since the data is simple
     STEPS_PER_EPOCH = 100   # 100
@@ -185,4 +192,4 @@ for index, image_id in enumerate(image_ids):
 sub = pd.DataFrame()
 sub['ImageId'] = new_test_ids
 sub['EncodedPixels'] = pd.Series(rles).apply(lambda x: ' '.join(str(y) for y in x))
-sub.to_csv('sub-dsbowl2018-10.csv', index=False)
+sub.to_csv('sub-dsbowl2018-12.csv', index=False)

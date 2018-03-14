@@ -55,7 +55,7 @@ class ShapesConfig(Config):
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
     IMAGE_MIN_DIM = 512 # 128
-    IMAGE_MAX_DIM = 1024 # 128
+    IMAGE_MAX_DIM = 512 # 128
 
     USE_MINI_MASK = True
     MINI_MASK_SHAPE = (56, 56)  # (height, width) of the mini-mask
@@ -63,8 +63,21 @@ class ShapesConfig(Config):
     # You can reduce this during training to generate more propsals.
     RPN_NMS_THRESHOLD = 0.5 # 0.7
 
+    # How many anchors per image to use for RPN training
+    RPN_TRAIN_ANCHORS_PER_IMAGE = 320   # 256
+
+    # ROIs kept after non-maximum supression (training and inference)
+    POST_NMS_ROIS_TRAINING = 2000
+    POST_NMS_ROIS_INFERENCE = 2000
+
     # Image mean (RGB)
     # MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
+
+    # Maximum number of ground truth instances to use in one image
+    MAX_GT_INSTANCES = 256
+
+    # Max number of final detections
+    DETECTION_MAX_INSTANCES = 400   # 100
 
     # Use smaller anchors because our image and objects are small
     RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)  # anchor side in pixels
@@ -72,13 +85,13 @@ class ShapesConfig(Config):
 
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
-    TRAIN_ROIS_PER_IMAGE = 200  # 32
+    TRAIN_ROIS_PER_IMAGE = 512  # 32
 
     # Use a small epoch since the data is simple
-    STEPS_PER_EPOCH = 100   # 100
+    STEPS_PER_EPOCH = 300   # 100
 
     # use small validation steps since the epoch is small
-    VALIDATION_STEPS = 10   # 5
+    VALIDATION_STEPS = 70   # 5
 
 
 config = ShapesConfig()
