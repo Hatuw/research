@@ -71,7 +71,7 @@ class ShapesConfig(Config):
     POST_NMS_ROIS_INFERENCE = 2000
 
     # Image mean (RGB)
-    # MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
+    MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
 
     # Maximum number of ground truth instances to use in one image
     MAX_GT_INSTANCES = 256
@@ -88,7 +88,7 @@ class ShapesConfig(Config):
     TRAIN_ROIS_PER_IMAGE = 512  # 32
 
     # Use a small epoch since the data is simple
-    STEPS_PER_EPOCH = 300   # 100
+    STEPS_PER_EPOCH = 500   # 100
 
     # use small validation steps since the epoch is small
     VALIDATION_STEPS = 70   # 5

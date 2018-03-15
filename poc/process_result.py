@@ -192,4 +192,4 @@ for index, image_id in enumerate(image_ids):
 sub = pd.DataFrame()
 sub['ImageId'] = new_test_ids
 sub['EncodedPixels'] = pd.Series(rles).apply(lambda x: ' '.join(str(y) for y in x))
-sub.to_csv('sub-dsbowl2018-12.csv', index=False)
+sub.to_csv('sub-dsbowl2018-14.csv', index=False)
