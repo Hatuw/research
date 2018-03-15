@@ -30,6 +30,8 @@ import keras.models as KM
 
 import utils
 
+from gen_data import data_augmentation
+
 # Requires TensorFlow 1.3+ and Keras 2.0.8+.
 from distutils.version import LooseVersion
 assert LooseVersion(tf.__version__) >= LooseVersion("1.3")
@@ -1199,9 +1201,10 @@ def load_image_gt(dataset, config, image_id, augment=False,
 
     # Random horizontal flips.
     if augment:
-        if random.randint(0, 1):
-            image = np.fliplr(image)
-            mask = np.fliplr(mask)
+        image, mask = data_augmentation(image, mask)
+        # if random.randint(0, 1):
+        #     image = np.fliplr(image)
+        #     mask = np.fliplr(mask)
 
     # Bounding boxes. Note that some boxes might be all zeros
     # if the corresponding mask got cropped out.
@@ -2202,7 +2205,7 @@ class MaskRCNN():
                                          batch_size=self.config.BATCH_SIZE)
         val_generator = data_generator(val_dataset, self.config, shuffle=True,
                                        batch_size=self.config.BATCH_SIZE,
-                                       augment=False)
+                                       augment=True)
 
         # Callbacks
         callbacks = [
