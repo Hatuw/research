@@ -88,7 +88,7 @@ class ShapesConfig(Config):
     TRAIN_ROIS_PER_IMAGE = 512  # 32
 
     # Use a small epoch since the data is simple
-    STEPS_PER_EPOCH = 500   # 100
+    STEPS_PER_EPOCH = 1000   # 300/100
 
     # use small validation steps since the epoch is small
     VALIDATION_STEPS = 70   # 5
@@ -201,7 +201,7 @@ image_ids = os.listdir(DATA_DIR)
 np.random.shuffle(image_ids)
 dtset_size = len(image_ids)
 training_ids = image_ids[:int(dtset_size*0.8)]
-testing_ids = image_ids[int(dtset_size*0.2):]
+testing_ids = image_ids[int(dtset_size*0.8):]
 
 # Training dataset
 dataset_train = ShapesDataset()

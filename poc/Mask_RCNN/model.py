@@ -2205,7 +2205,7 @@ class MaskRCNN():
                                          batch_size=self.config.BATCH_SIZE)
         val_generator = data_generator(val_dataset, self.config, shuffle=True,
                                        batch_size=self.config.BATCH_SIZE,
-                                       augment=True)
+                                       augment=False)
 
         # Callbacks
         callbacks = [

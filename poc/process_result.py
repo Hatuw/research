@@ -6,6 +6,7 @@ Detecting nuclei and processing results.
 import os
 import sys
 sys.path.append("Mask_RCNN")
+import time
 import random
 import numpy as np
 import pandas as pd
@@ -192,4 +193,6 @@ for index, image_id in enumerate(image_ids):
 sub = pd.DataFrame()
 sub['ImageId'] = new_test_ids
 sub['EncodedPixels'] = pd.Series(rles).apply(lambda x: ' '.join(str(y) for y in x))
-sub.to_csv('sub-dsbowl2018-14.csv', index=False)
+# sub.to_csv('sub-dsbowl2018-15.csv', index=False)
+time_str = time.strftime('%m%d-%H%M', time.localtime())
+sub.to_csv('sub-{}.csv'.format(time_str), index=False)
