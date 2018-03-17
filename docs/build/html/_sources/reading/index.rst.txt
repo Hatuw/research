@@ -1,0 +1,29 @@
+Reading Notes
+===================
+
+Paper List
+-------------------
+
+- :ref:`Efficient Estimation of Word Representations in Vector Space`
+
+- :ref:`On Availability for Blockchain-Based Systems`
+
+- :ref:`Personal Recommendation Using Deep Recurrent Neural Networks in NetEase`
+
+
+.. _Efficient Estimation of Word Representations in Vector Space:
+
+Efficient Estimation of Word Representations in Vector Space
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+.. _On Availability for Blockchain-Based Systems:
+
+On Availability for Blockchain-Based Systems
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+.. _Personal Recommendation Using Deep Recurrent Neural Networks in NetEase:
+
+Personal Recommendation Using Deep Recurrent Neural Networks in NetEase
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
