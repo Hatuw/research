@@ -182,12 +182,54 @@
 </ul>
 <div class="section" id="efficient-estimation-of-word-representations-in-vector-space">
 <span id="id1"></span><h3>Efficient Estimation of Word Representations in Vector Space<a class="headerlink" href="#efficient-estimation-of-word-representations-in-vector-space" title="永久链接至标题">¶</a></h3>
+<p>作者提出了两种新的结构模型,用于在大的数据集中,用向量来表示words.</p>
+<ul>
+<li><p class="first">作者的其中一个motivation是想设计一个可以有效的训练更多的数据,但在表示能力上可能没神经网络这么好(<cite>precisely</cite>)</p>
+</li>
+<li><p class="first"><strong>CBOW</strong> : 跟标准的词袋(bag-of-words)模型不同的是,该模型用连续的分布来代表上下文</p>
+<blockquote>
+<div><ul class="simple">
+<li>计算复杂度为 Q = N × D + D × log_2(V)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Skip-gram</strong> : <cite>It tries to maximize classification of a word based on another word in the sam sentence</cite></p>
+<blockquote>
+<div><ul class="simple">
+<li>计算复杂度为 Q = C × (D + D × log_2(V))</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
 </div>
 <div class="section" id="on-availability-for-blockchain-based-systems">
 <span id="id2"></span><h3>On Availability for Blockchain-Based Systems<a class="headerlink" href="#on-availability-for-blockchain-based-systems" title="永久链接至标题">¶</a></h3>
 </div>
 <div class="section" id="personal-recommendation-using-deep-recurrent-neural-networks-in-netease">
 <span id="id3"></span><h3>Personal Recommendation Using Deep Recurrent Neural Networks in NetEase<a class="headerlink" href="#personal-recommendation-using-deep-recurrent-neural-networks-in-netease" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li>即使协同过滤(CF)在推荐相关的工作表现得比较好,但是这是建立于历史数据之上,缺乏用户的选择.因此作者提出了用RNN来做推荐的模型.</li>
+<li><dl class="first docutils">
+<dt>challenge:</dt>
+<dd><ul class="first last">
+<li>输入向量大</li>
+<li>模型需要对用户实时访问/顺序足够敏感和有效</li>
+<li>模型需要在线学习,速度也要足够快</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>作者提出的模型与standard的DRNN不同的是:</dt>
+<dd><ul class="first last">
+<li>模型是用来跟踪(<cite>track</cite>)用户的访问模型</li>
+<li>页面序列显示了用户到他所需产品的路径</li>
+<li>模型的目的是要缩短用户到其所需产品的距离并要求实时推荐(速度足够快)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </div>
 </div>
 </div>
