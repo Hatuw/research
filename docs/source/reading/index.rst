@@ -34,6 +34,8 @@ Efficient Estimation of Word Representations in Vector Space
 On Availability for Blockchain-Based Systems
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+- 比特币中需要6个区块才能 **最终确认** 交易, 以太坊则需要12个区块(这个数字依赖于事物/交易的价值、挖矿的开销和攻击的威胁性), 这意味着攻击者难以控制足够的算力来破坏/改变当前的共识(`51%攻击`). 作者也提到一个使用少于51%的算力来攻击的工作
+
 
 .. _Personal Recommendation Using Deep Recurrent Neural Networks in NetEase:
 
