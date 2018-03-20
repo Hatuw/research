@@ -58,13 +58,17 @@ Personal Recommendation Using Deep Recurrent Neural Networks in NetEase
 .. math::
     \bar{V} = \sum_{i=0}^{x-n}\epsilon_{i}V_{i},\ 其中,\ \epsilon 为\ \epsilon_{i}=\frac{\theta(p_i)}{\sum_{j=i}^{x-n}\theta(p_j)}
 
-最终, 得到用户购买第i个商品的概率为:
+最终, 得到用户购买第 :math:`i` 个商品的概率为:
 
 .. math::
-    \frac{f(\sum_{x=0}^{E-1}(w_{i}^{L_0}aL_{0}(t)+bL_{0}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}
-    {\sum_{x}f(\sum_{x=0}^{E-1}(w_{i}^{L_0}aL_{0}(t)+bL_{0}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}
+    \frac{f(\sum_{x=0}^{E-1}(w_{i}^{L_0}a_{L_{0}}(t)+b_{L_{0}}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}
+    {\sum_{x}f(\sum_{x=0}^{E-1}(w_{i}^{L_0}a_{L_{0}}(t)+b_{L_{0}}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}
 
 - 即使协同过滤(CF)在推荐相关的工作表现得比较好,但是这是建立于历史数据之上,缺乏用户的选择.因此作者提出了用RNN来做推荐的模型.
+
+- 文中提到 `Caffe 1.0` 是没有RNN模型的, 所以自己通过 `share weights` 的方法将CNN转换成RNN.
+
+- 在训练的过程中, 作者使用遗传算法来进行调参
 
 - challenge:
 
