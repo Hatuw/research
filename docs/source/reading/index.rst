@@ -16,9 +16,15 @@ Paper List
 Efficient Estimation of Word Representations in Vector Space
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-作者提出了两种新的结构模型,用于在大的数据集中,用向量来表示words.
+传统的NNLN模型包含四层(输入层、映射层、隐含层、输出层), 其计算复杂度主要在 **映射层** 到 **隐含层** 之间的计算, 而且需要指定上下文的长度. 
+
+RNNLM模型被提出用来改进NNLM模型，去掉了映射层，只有输入层、隐含层和输出层，计算复杂度来源于上一层的隐含层到下一层隐含层之间的计算。
+
+作者提出了两种新的结构模型, 用于在大的数据集中, 用向量来表示words.(就是word2vec)
 
 - 作者的其中一个motivation是想设计一个可以有效的训练更多的数据,但在表示能力上可能没神经网络这么好(`precisely`)
+
+
 
 - **CBOW** : 跟标准的词袋(bag-of-words)模型不同的是,该模型用连续的分布来代表上下文
 
@@ -42,13 +48,13 @@ On Availability for Blockchain-Based Systems
 
 - 作者在三个场景中测试其中断(Abort)机制, 实验表明其提出的中断机制可以有效地(:math:`100\%`)中断这三种情况下的交易:
 
-    1) A transaction does not get included in the usual period of time (交易被include的时间过长)
-    2) A client changes its mind and decides to roll-back the issued transaction (撤回交易)
-    3) A transaction is in indefinite pending state due to insufficient funds (资金不足导致交易陷入无限等待状态)
+    (1) A transaction does not get included in the usual period of time (交易被include的时间过长)
+    (2) A client changes its mind and decides to roll-back the issued transaction (撤回交易)
+    (3) A transaction is in indefinite pending state due to insufficient funds (资金不足导致交易陷入无限等待状态)
 
     - 在(1)中, 设定最长等待的时间为10分钟(根据前文的统计设定的), 提交了100个低于市场费率(:math:`mr, market\ rate`) (:math:`0, 0.1\times mr, \dots, 0.9\times mr`)的交易. 如果交易在10分钟内没有被包含的话, 那么就发送一个交易费率为 :math:`mr` , value为 :math:`0` 的交易到地址 0x0 (也就是空白交易).
 
-    - 在(2)中, 跟场景(1)相似, 不过 **最大容忍10分钟** 改成了 **等待** 3分钟(模拟交易发起人在3分钟后想撤回交易)
+    - 在(2)中, 跟场景(1)相似, 不过 **最大容忍10分钟** 改成了 **等待3分钟后** (模拟交易发起人在3分钟后想撤回交易)
 
     - 场景(3), 假设nonce 为 :math:`n` 时账户余额为 :math:`k` , 准备两个交易
 
@@ -70,29 +76,27 @@ On Availability for Blockchain-Based Systems
 Personal Recommendation Using Deep Recurrent Neural Networks in NetEase
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-- 作者提出了 **DRNN** (Deep Recurrent Neural Networks)和 **FNN** (Feedforward Neural Network)模型来对用户网购的行为进行预测和实时推荐.
+本文提出一种用 **DRNN** (Deep Recurrent Neural Networks)和 **FNN** (Feedforward Neural Network) 来对用户网购的行为进行预测和实时推荐的方法. 该方法突破了传统的一些方法(如协同过滤)的限制, 可在线学习和实时训练, 并且准确率也大大提升.
 
-    - 在DRNN中, 因为用户访问的可能有多个网页, 因此把之前的/超出范围(n)的浏览记录合并成一个history state, 同时加上当前的一些浏览state作为输入
-    - FNN的作用是根据用户的购买记录对用户的购买进行预测
-
-    两个模型合并输出最终的预测. 与传统的方法(CF, 协同过滤)相比, 这篇文章提出的方法能达到实时推荐的效果, 而且表现也更加好.
-
-- history state的表示为:
+- 在DRNN中, 因为用户访问的可能有多个网页, 因此把之前的/超出范围(n)的浏览记录合并成一个history state, 同时加上当前的一些浏览state作为输入. 其中history state合并为:
 
 .. math::
-    \bar{V} = \sum_{i=0}^{x-n}\epsilon_{i}V_{i},\ 其中,\ \epsilon 为\ \epsilon_{i}=\frac{\theta(p_i)}{\sum_{j=i}^{x-n}\theta(p_j)}
+    \bar{V} = \sum_{i=0}^{x-n}\epsilon_{i}V_{i},\ \epsilon_{i}=\frac{\theta(p_i)}{\sum_{j=i}^{x-n}\theta(p_j)}
 
-最终, 得到用户购买第 :math:`i` 个商品的概率为:
+
+|   其中, :math:`V_i` 是页面 :math:`p_i` 的向量, :math:`\epsilon_{i}` 是旧状态的衰减因子
+
+- FNN的作用是根据用户的购买记录对用户的购买进行预测
+
+|   最终, 两个模型合并输出最终的预测, 得到用户购买第 :math:`i` 个商品的概率为:
 
 .. math::
-    \frac{f(\sum_{x=0}^{E-1}(w_{i}^{L_0}a_{L_{0}}(t)+b_{L_{0}}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}
+    P(i)=\frac{f(\sum_{x=0}^{E-1}(w_{i}^{L_0}a_{L_{0}}(t)+b_{L_{0}}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}
     {\sum_{x}f(\sum_{x=0}^{E-1}(w_{i}^{L_0}a_{L_{0}}(t)+b_{L_{0}}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}
 
-- 即使协同过滤(CF)在推荐相关的工作表现得比较好,但是这是建立于历史数据之上,缺乏用户的选择.因此作者提出了用RNN来做推荐的模型.
+.. - 即使协同过滤(CF)在推荐相关的工作表现得比较好,但是这是建立于历史数据之上,缺乏用户的选择.因此作者提出了用RNN来做推荐的模型.
 
-- 文中提到 `Caffe 1.0` 是没有RNN模型的, 所以自己通过 `share weights` 的方法将CNN转换成RNN.
-
-- 在训练的过程中, 作者使用遗传算法来进行调参
+- 在实验中, 文中提到 `Caffe 1.0` 是没有RNN模型的, 所以通过 `share weights` 的方法将CNN转换成RNN. 文中给出了生成代码(``CodeGen(int w, int l, int h)``)的算法, 改算法可以根据输入的width, length 和 height来生成特定的RNN网络, 并结合遗传算法(``GenTune(int w, int l, int h)``)对其进行调参优化
 
 - challenge:
 

@@ -182,7 +182,9 @@
 </ul>
 <div class="section" id="efficient-estimation-of-word-representations-in-vector-space">
 <span id="id1"></span><h3>Efficient Estimation of Word Representations in Vector Space<a class="headerlink" href="#efficient-estimation-of-word-representations-in-vector-space" title="永久链接至标题">¶</a></h3>
-<p>作者提出了两种新的结构模型,用于在大的数据集中,用向量来表示words.</p>
+<p>传统的NNLN模型包含四层(输入层、映射层、隐含层、输出层), 其计算复杂度主要在 <strong>映射层</strong> 到 <strong>隐含层</strong> 之间的计算, 而且需要指定上下文的长度.</p>
+<p>RNNLM模型被提出用来改进NNLM模型，去掉了映射层，只有输入层、隐含层和输出层，计算复杂度来源于上一层的隐含层到下一层隐含层之间的计算。</p>
+<p>作者提出了两种新的结构模型, 用于在大的数据集中, 用向量来表示words.(就是word2vec)</p>
 <ul>
 <li><p class="first">作者的其中一个motivation是想设计一个可以有效的训练更多的数据,但在表示能力上可能没神经网络这么好(<cite>precisely</cite>)</p>
 </li>
@@ -219,7 +221,7 @@
 <ul>
 <li><p class="first">在(1)中, 设定最长等待的时间为10分钟(根据前文的统计设定的), 提交了100个低于市场费率(<span class="math notranslate">\(mr, market\ rate\)</span>) (<span class="math notranslate">\(0, 0.1\times mr, \dots, 0.9\times mr\)</span>)的交易. 如果交易在10分钟内没有被包含的话, 那么就发送一个交易费率为 <span class="math notranslate">\(mr\)</span> , value为 <span class="math notranslate">\(0\)</span> 的交易到地址 0x0 (也就是空白交易).</p>
 </li>
-<li><p class="first">在(2)中, 跟场景(1)相似, 不过 <strong>最大容忍10分钟</strong> 改成了 <strong>等待</strong> 3分钟(模拟交易发起人在3分钟后想撤回交易)</p>
+<li><p class="first">在(2)中, 跟场景(1)相似, 不过 <strong>最大容忍10分钟</strong> 改成了 <strong>等待3分钟后</strong> (模拟交易发起人在3分钟后想撤回交易)</p>
 </li>
 <li><p class="first">场景(3), 假设nonce 为 <span class="math notranslate">\(n\)</span> 时账户余额为 <span class="math notranslate">\(k\)</span> , 准备两个交易</p>
 <blockquote>
@@ -251,31 +253,26 @@
 </div>
 <div class="section" id="personal-recommendation-using-deep-recurrent-neural-networks-in-netease">
 <span id="id3"></span><h3>Personal Recommendation Using Deep Recurrent Neural Networks in NetEase<a class="headerlink" href="#personal-recommendation-using-deep-recurrent-neural-networks-in-netease" title="永久链接至标题">¶</a></h3>
-<ul>
-<li><p class="first">作者提出了 <strong>DRNN</strong> (Deep Recurrent Neural Networks)和 <strong>FNN</strong> (Feedforward Neural Network)模型来对用户网购的行为进行预测和实时推荐.</p>
-<blockquote>
-<div><ul class="simple">
-<li>在DRNN中, 因为用户访问的可能有多个网页, 因此把之前的/超出范围(n)的浏览记录合并成一个history state, 同时加上当前的一些浏览state作为输入</li>
+<p>本文提出一种用 <strong>DRNN</strong> (Deep Recurrent Neural Networks)和 <strong>FNN</strong> (Feedforward Neural Network) 来对用户网购的行为进行预测和实时推荐的方法. 该方法突破了传统的一些方法(如协同过滤)的限制, 可在线学习和实时训练, 并且准确率也大大提升.</p>
+<ul class="simple">
+<li>在DRNN中, 因为用户访问的可能有多个网页, 因此把之前的/超出范围(n)的浏览记录合并成一个history state, 同时加上当前的一些浏览state作为输入. 其中history state合并为:</li>
+</ul>
+<div class="math notranslate">
+\[\bar{V} = \sum_{i=0}^{x-n}\epsilon_{i}V_{i},\ \epsilon_{i}=\frac{\theta(p_i)}{\sum_{j=i}^{x-n}\theta(p_j)}\]</div>
+<div class="line-block">
+<div class="line">其中, <span class="math notranslate">\(V_i\)</span> 是页面 <span class="math notranslate">\(p_i\)</span> 的向量, <span class="math notranslate">\(\epsilon_{i}\)</span> 是旧状态的衰减因子</div>
+</div>
+<ul class="simple">
 <li>FNN的作用是根据用户的购买记录对用户的购买进行预测</li>
 </ul>
-<p>两个模型合并输出最终的预测. 与传统的方法(CF, 协同过滤)相比, 这篇文章提出的方法能达到实时推荐的效果, 而且表现也更加好.</p>
-</div></blockquote>
-</li>
-<li><p class="first">history state的表示为:</p>
-</li>
-</ul>
+<div class="line-block">
+<div class="line">最终, 两个模型合并输出最终的预测, 得到用户购买第 <span class="math notranslate">\(i\)</span> 个商品的概率为:</div>
+</div>
 <div class="math notranslate">
-\[\bar{V} = \sum_{i=0}^{x-n}\epsilon_{i}V_{i},\ 其中,\ \epsilon 为\ \epsilon_{i}=\frac{\theta(p_i)}{\sum_{j=i}^{x-n}\theta(p_j)}\]</div>
-<p>最终, 得到用户购买第 <span class="math notranslate">\(i\)</span> 个商品的概率为:</p>
-<div class="math notranslate">
-\[\frac{f(\sum_{x=0}^{E-1}(w_{i}^{L_0}a_{L_{0}}(t)+b_{L_{0}}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}
+\[P(i)=\frac{f(\sum_{x=0}^{E-1}(w_{i}^{L_0}a_{L_{0}}(t)+b_{L_{0}}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}
 {\sum_{x}f(\sum_{x=0}^{E-1}(w_{i}^{L_0}a_{L_{0}}(t)+b_{L_{0}}(t))+\sum_{x=0}^{\bar{E}-1}(\bar{w}_{i}^{L_1}\bar{a}_{x}^{(L_1)}+b_{x}^{(L_1)}))}\]</div>
 <ul>
-<li><p class="first">即使协同过滤(CF)在推荐相关的工作表现得比较好,但是这是建立于历史数据之上,缺乏用户的选择.因此作者提出了用RNN来做推荐的模型.</p>
-</li>
-<li><p class="first">文中提到 <cite>Caffe 1.0</cite> 是没有RNN模型的, 所以自己通过 <cite>share weights</cite> 的方法将CNN转换成RNN.</p>
-</li>
-<li><p class="first">在训练的过程中, 作者使用遗传算法来进行调参</p>
+<li><p class="first">在实验中, 文中提到 <cite>Caffe 1.0</cite> 是没有RNN模型的, 所以通过 <cite>share weights</cite> 的方法将CNN转换成RNN. 文中给出了生成代码(<code class="docutils literal notranslate"><span class="pre">CodeGen(int</span> <span class="pre">w,</span> <span class="pre">int</span> <span class="pre">l,</span> <span class="pre">int</span> <span class="pre">h)</span></code>)的算法, 改算法可以根据输入的width, length 和 height来生成特定的RNN网络, 并结合遗传算法(<code class="docutils literal notranslate"><span class="pre">GenTune(int</span> <span class="pre">w,</span> <span class="pre">int</span> <span class="pre">l,</span> <span class="pre">int</span> <span class="pre">h)</span></code>)对其进行调参优化</p>
 </li>
 <li><p class="first">challenge:</p>
 <blockquote>
