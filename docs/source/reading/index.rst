@@ -34,11 +34,35 @@ Efficient Estimation of Word Representations in Vector Space
 On Availability for Blockchain-Based Systems
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-- 作者详细分析了在区块链中对commit times(交易确认时间)产生消极影响的原因, 并提出了一个明确的中断机制来减少/限制这种延迟的发生.
+`发表在SRDS 2017 (CCF B)`
+
+作者以 `Ethereum <https://www.ethereum.org/>`_ 为例, 分析了在区块链中对交易确认时间(commit times)产生消极影响的原因, 并提出了一个有效的中断机制来减少这种情况, 以优化用户体验.
+
+- 作者从Ethereum公链上收集了大量的交易, 分析Ethereum中可能会对交易的commit产生影响的原因. 其中, 最有可能对commit产生影响的是用户定义的 `gas price` 和 `gas limit`
+
+- 作者在三个场景中测试其中断(Abort)机制, 实验表明其提出的中断机制可以有效地(:math:`100\%`)中断这三种情况下的交易:
+
+    1) A transaction does not get included in the usual period of time (交易被include的时间过长)
+    2) A client changes its mind and decides to roll-back the issued transaction (撤回交易)
+    3) A transaction is in indefinite pending state due to insufficient funds (资金不足导致交易陷入无限等待状态)
+
+    - 在(1)中, 设定最长等待的时间为10分钟(根据前文的统计设定的), 提交了100个低于市场费率(:math:`mr, market\ rate`) (:math:`0, 0.1\times mr, \dots, 0.9\times mr`)的交易. 如果交易在10分钟内没有被包含的话, 那么就发送一个交易费率为 :math:`mr` , value为 :math:`0` 的交易到地址 0x0 (也就是空白交易).
+
+    - 在(2)中, 跟场景(1)相似, 不过 **最大容忍10分钟** 改成了 **等待** 3分钟(模拟交易发起人在3分钟后想撤回交易)
+
+    - 场景(3), 假设nonce 为 :math:`n` 时账户余额为 :math:`k` , 准备两个交易
+
+        +-------------------------+---------------------------+
+        |    :math:`Tx_1` (n+1)   |    :math:`Tx_2` (n+2)     |
+        +=========================+===========================+
+        |:math:`\frac{1}{1000}k`  |:math:`\frac{999}{1000}k`  |
+        +-------------------------+---------------------------+
+    
+        先广播 :math:`Tx_2` , 5秒后广播 :math:`Tx_1`, 这样会因余额不足而导致死锁, 此时发送一个空白的、nonce为n+2的交易去中断 :math:`Tx_2`, 中断用时中位数为45秒
 
 - 比特币中需要6个区块才能 **最终确认** 交易, 以太坊则需要12个区块(这个数字依赖于事物/交易的价值、挖矿的开销和攻击的威胁性), 这意味着攻击者难以控制足够的算力来破坏/改变当前的共识(`51%攻击`). 作者也提到一个使用少于51%的算力来攻击的工作
 
-作者首先分析了transaction fees 和 locktimes, 得出了这两者对交易延迟的影响不大的结论
+.. 作者首先分析了transaction fees 和 locktimes, 得出了这两者对交易延迟的影响不大的结论
 
 
 .. _Personal Recommendation Using Deep Recurrent Neural Networks in NetEase:

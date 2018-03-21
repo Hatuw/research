@@ -204,11 +204,50 @@
 </div>
 <div class="section" id="on-availability-for-blockchain-based-systems">
 <span id="id2"></span><h3>On Availability for Blockchain-Based Systems<a class="headerlink" href="#on-availability-for-blockchain-based-systems" title="永久链接至标题">¶</a></h3>
-<ul class="simple">
-<li>作者详细分析了在区块链中对commit times(交易确认时间)产生消极影响的原因, 并提出了一个明确的中断机制来减少/限制这种延迟的发生.</li>
-<li>比特币中需要6个区块才能 <strong>最终确认</strong> 交易, 以太坊则需要12个区块(这个数字依赖于事物/交易的价值、挖矿的开销和攻击的威胁性), 这意味着攻击者难以控制足够的算力来破坏/改变当前的共识(<cite>51%攻击</cite>). 作者也提到一个使用少于51%的算力来攻击的工作</li>
+<p><cite>发表在SRDS 2017 (CCF B)</cite></p>
+<p>作者以 <a class="reference external" href="https://www.ethereum.org/">Ethereum</a> 为例, 分析了在区块链中对交易确认时间(commit times)产生消极影响的原因, 并提出了一个有效的中断机制来减少这种情况, 以优化用户体验.</p>
+<ul>
+<li><p class="first">作者从Ethereum公链上收集了大量的交易, 分析Ethereum中可能会对交易的commit产生影响的原因. 其中, 最有可能对commit产生影响的是用户定义的 <cite>gas price</cite> 和 <cite>gas limit</cite></p>
+</li>
+<li><p class="first">作者在三个场景中测试其中断(Abort)机制, 实验表明其提出的中断机制可以有效地(<span class="math notranslate">\(100\%\)</span>)中断这三种情况下的交易:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>A transaction does not get included in the usual period of time (交易被include的时间过长)</li>
+<li>A client changes its mind and decides to roll-back the issued transaction (撤回交易)</li>
+<li>A transaction is in indefinite pending state due to insufficient funds (资金不足导致交易陷入无限等待状态)</li>
+</ol>
+<ul>
+<li><p class="first">在(1)中, 设定最长等待的时间为10分钟(根据前文的统计设定的), 提交了100个低于市场费率(<span class="math notranslate">\(mr, market\ rate\)</span>) (<span class="math notranslate">\(0, 0.1\times mr, \dots, 0.9\times mr\)</span>)的交易. 如果交易在10分钟内没有被包含的话, 那么就发送一个交易费率为 <span class="math notranslate">\(mr\)</span> , value为 <span class="math notranslate">\(0\)</span> 的交易到地址 0x0 (也就是空白交易).</p>
+</li>
+<li><p class="first">在(2)中, 跟场景(1)相似, 不过 <strong>最大容忍10分钟</strong> 改成了 <strong>等待</strong> 3分钟(模拟交易发起人在3分钟后想撤回交易)</p>
+</li>
+<li><p class="first">场景(3), 假设nonce 为 <span class="math notranslate">\(n\)</span> 时账户余额为 <span class="math notranslate">\(k\)</span> , 准备两个交易</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><span class="math notranslate">\(Tx_1\)</span> (n+1)</th>
+<th class="head"><span class="math notranslate">\(Tx_2\)</span> (n+2)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><span class="math notranslate">\(\frac{1}{1000}k\)</span></td>
+<td><span class="math notranslate">\(\frac{999}{1000}k\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>先广播 <span class="math notranslate">\(Tx_2\)</span> , 5秒后广播 <span class="math notranslate">\(Tx_1\)</span>, 这样会因余额不足而导致死锁, 此时发送一个空白的、nonce为n+2的交易去中断 <span class="math notranslate">\(Tx_2\)</span>, 中断用时中位数为45秒</p>
+</div></blockquote>
+</li>
 </ul>
-<p>作者首先分析了transaction fees 和 locktimes, 得出了这两者对交易延迟的影响不大的结论</p>
+</div></blockquote>
+</li>
+<li><p class="first">比特币中需要6个区块才能 <strong>最终确认</strong> 交易, 以太坊则需要12个区块(这个数字依赖于事物/交易的价值、挖矿的开销和攻击的威胁性), 这意味着攻击者难以控制足够的算力来破坏/改变当前的共识(<cite>51%攻击</cite>). 作者也提到一个使用少于51%的算力来攻击的工作</p>
+</li>
+</ul>
 </div>
 <div class="section" id="personal-recommendation-using-deep-recurrent-neural-networks-in-netease">
 <span id="id3"></span><h3>Personal Recommendation Using Deep Recurrent Neural Networks in NetEase<a class="headerlink" href="#personal-recommendation-using-deep-recurrent-neural-networks-in-netease" title="永久链接至标题">¶</a></h3>
