@@ -16,23 +16,33 @@ Paper List
 Efficient Estimation of Word Representations in Vector Space
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-传统的NNLN模型包含四层(输入层、映射层、隐含层、输出层), 其计算复杂度主要在 **映射层** 到 **隐含层** 之间的计算, 而且需要指定上下文的长度. (:math:`Q=N\times D+N\times D\times H+H\times V`)
+- 传统的NNLM(Feedforward Neural Net Language Model)模型包含四层(输入层、映射层、隐含层、输出层), 其计算复杂度主要在 **映射层** 到 **隐含层** 之间的计算, 而且需要指定上下文的长度.
 
-RNNLM模型被提出用来改进NNLM模型，去掉了映射层，只有输入层、隐含层和输出层，计算复杂度来源于上一层的隐含层到下一层隐含层之间的计算。(:math:`Q=H\times H+H\times V`)
+        :math:`Q=N\times D+N\times D\times H+H\times V`
 
-作者提出了两种新的结构模型, 用于在大的数据集中, 用向量来表示words.(就是word2vec)
+    --> :math:`Q=N\times D+N\times D\times H+H\times log_2{V}`
 
-- 作者的其中一个motivation是想设计一个可以有效的训练更多的数据,但在表示能力上可能没神经网络这么好(`precisely`)
+- RNNLM(Recurrent Neural Net Language Model)模型被提出用来改进NNLM模型，**去掉了映射层** ，只有输入层、隐含层和输出层，计算复杂度来源于上一层的隐含层到下一层隐含层之间的计算.
 
+        :math:`Q=H\times H+H\times V`
 
+    --> :math:`Q=H\times H+H\times log_2{V}`
 
-- **CBOW** : 跟标准的词袋(bag-of-words)模型不同的是,该模型用连续的分布来代表上下文
+作者提出了 **CBOW** (Continuous Bag-of-Words Model) 和 **Skip-gram** (Continuous Skip-gram Model) 模型, 其去掉了隐含层, 主要的计算复杂度依赖于softmax normalization.
 
-    - 计算复杂度为 :math:`Q = N \times D + D \times log_2(V)`
+|word2vec|
 
-- **Skip-gram** : `It tries to maximize classification of a word based on another word in the sam sentence`
+.. |word2vec| image:: ../assets/word2vec.png
+    :width: 400px
+    :align: middle
 
-    - 计算复杂度为 :math:`Q = C \times (D + D \times log_2(V))`
+- **CBOW** : 与NNLM不同的是, 隐含层被移除了, 并且映射层会共享; 跟标准的词袋(bag-of-words)模型不同的是,该模型用连续的分布来代表上下文
+
+    - 计算复杂度为 :math:`Q = N \times D + D \times log_2{V}`
+
+- **Skip-gram** : 跟CBOW相似, 不过 `It tries to maximize classification of a word based on another word in the sam sentence`. 用单前的词输入到映射层的对数线性(log-linear)分类器中, 并预测给定范围的词(上下文)
+
+    - 计算复杂度为 :math:`Q = C \times (D + D \times log_2{V})`
 
 
 .. _On Availability for Blockchain-Based Systems:

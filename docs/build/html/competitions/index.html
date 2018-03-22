@@ -238,7 +238,7 @@
 <li>目前用以下设置跑出来的结果最好, Kaggle 排名469左右(<cite>shapes20180314T1748</cite>).</li>
 </ul>
 </div></blockquote>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span>\
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span>\
 <span class="go">class ShapesConfig(Config):</span>
 <span class="go">    GPU_COUNT = 1</span>
 <span class="go">    IMAGES_PER_GPU = 2</span>
@@ -265,7 +265,7 @@
 </div>
 <blockquote>
 <div><ul class="simple">
-<li>训练集的Mean RGB为 <code class="docutils literal"><span class="pre">MEAN_PIXEL</span> <span class="pre">=</span> <span class="pre">np.array([44.5,</span> <span class="pre">40.7,</span> <span class="pre">48.6])</span></code> , 但是用这个设置跑出来的结果反而更差</li>
+<li>训练集的Mean RGB为 <code class="docutils literal notranslate"><span class="pre">MEAN_PIXEL</span> <span class="pre">=</span> <span class="pre">np.array([44.5,</span> <span class="pre">40.7,</span> <span class="pre">48.6])</span></code> , 但是用这个设置跑出来的结果反而更差</li>
 </ul>
 </div></blockquote>
 </div>
@@ -298,7 +298,7 @@
 <li>Github上有个Mask-RCN的细胞核检测Baseline(<a class="reference external" href="https://github.com/killthekitten/kaggle-ds-bowl-2018-baseline">https://github.com/killthekitten/kaggle-ds-bowl-2018-baseline</a>)</li>
 <li>Kaggle上面有个kernel用Mask-RCNN加上其他一些trick的,目前排名第七(<a class="reference external" href="https://www.kaggle.com/c/data-science-bowl-2018/discussion/50795">https://www.kaggle.com/c/data-science-bowl-2018/discussion/50795</a>)</li>
 </ul>
-<p class="last"><code class="docutils literal"><span class="pre">Mask_RCNN/model.py</span></code> 是Mask-RCNN的 <strong>resnet101</strong> 实现； <code class="docutils literal"><span class="pre">Mask_RCNN/train_shapes.ipynb</span></code> 是用自己数据集训练Mask_RCNN的一个demo，其中 <code class="docutils literal"><span class="pre">ShapesDataset</span></code> 类下的 <code class="docutils literal"><span class="pre">load_image()</span></code> 、 <code class="docutils literal"><span class="pre">load_mask()</span></code> 、<code class="docutils literal"><span class="pre">image_reference()</span></code> 方法需要重写以向外提供数据。 <code class="docutils literal"><span class="pre">poc/train_nuclei.py</span></code> 就是将此project应用于检测细胞核的尝试。</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">Mask_RCNN/model.py</span></code> 是Mask-RCNN的 <strong>resnet101</strong> 实现； <code class="docutils literal notranslate"><span class="pre">Mask_RCNN/train_shapes.ipynb</span></code> 是用自己数据集训练Mask_RCNN的一个demo，其中 <code class="docutils literal notranslate"><span class="pre">ShapesDataset</span></code> 类下的 <code class="docutils literal notranslate"><span class="pre">load_image()</span></code> 、 <code class="docutils literal notranslate"><span class="pre">load_mask()</span></code> 、<code class="docutils literal notranslate"><span class="pre">image_reference()</span></code> 方法需要重写以向外提供数据。 <code class="docutils literal notranslate"><span class="pre">poc/train_nuclei.py</span></code> 就是将此project应用于检测细胞核的尝试。</p>
 </dd>
 </dl>
 </li>
