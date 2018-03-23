@@ -16,11 +16,17 @@ Paper List
 Efficient Estimation of Word Representations in Vector Space
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-- 传统的NNLM(Feedforward Neural Net Language Model)模型包含四层(输入层、映射层、隐含层、输出层), 其计算复杂度主要在 **映射层** 到 **隐含层** 之间的计算, 而且需要指定上下文的长度.
+传统方法解决NLP语法/语义问题的时候通常是没有考虑单词之间的相关性, 这样的话(1)对于语料库的质量要求比较高, 同时(2)在训练上通常用小于million级别的词库(limitation).
+
+作者先回顾了传统的模型(NNLM和RNNLM), 其限制主要在于映射层到隐含层的计算复杂度大, 对此提出了CBOW和Skip-gram模型, 实验表明其计算复杂度和准确率都优于前者.
+
+- NNLM(Feedforward Neural Net Language Model)模型包含四层(输入层、映射层、隐含层、输出层), 其计算复杂度主要在 **映射层** 到 **隐含层** 之间的计算, 而且需要指定上下文的长度.
 
         :math:`Q=N\times D+N\times D\times H+H\times V`
 
     --> :math:`Q=N\times D+N\times D\times H+H\times log_2{V}` (用平衡二叉树优化)
+
+    文中给出了一个参考, 当输入大小N=10的时候, 映射层大小 :math:`P(N\times D)` 通常取500-2000, 隐含层大小H通常取500-1000. 这样的话即使优化了输出的大小 :math:`(V->log_2{V})` , 还是没有解决关键的地方
 
 - RNNLM(Recurrent Neural Net Language Model)模型被提出用来改进NNLM模型，**去掉了映射层** ，只有输入层、隐含层和输出层，计算复杂度来源于上一层的隐含层到下一层隐含层之间的计算.
 
@@ -72,7 +78,7 @@ On Availability for Blockchain-Based Systems
 
 `发表在SRDS 2017 (CCF B)`
 
-作者以 `Ethereum <https://www.ethereum.org/>`_ 为例, 分析了在区块链中对交易确认时间(commit times)产生消极影响的原因, 并提出了一个有效的中断机制来减少这种情况, 以优化用户体验.
+偏分析性的一篇文章. 作者以 `Ethereum <https://www.ethereum.org/>`_ 为例, 在公链上收集了大量的交易数据, 用于分析在区块链中对交易最终确认时间(commit times)产生消极影响的原因, 最后提出了一个中断机制(中断/撤回交易), 以优化用户体验.
 
 - 作者从Ethereum公链上收集了大量的交易(每次实验大概是 :math:`3\times 10^{5}` 个交易), 首先分析了 `locktimes` 和 `maximum gas`, 得到其不是 `orphan` 块产生的主要原因. 而最有可能对commit产生影响的是 `network connectivity` , `gas price` 和 `gas limit`
 
@@ -100,9 +106,9 @@ On Availability for Blockchain-Based Systems
 
 - 两次时间的时间间隔有点大了(2016.11, 2017.04), 以太坊的交易可能会因为整体的网络情况而有所不同.
 
-- 实验中作者修改了最大连接的节点数为500(默认是25), 因此在实验时大都能连接到400个节点. 这在中断机制的实验中为作者的节点提供了有利的条件, 使得 :math:`T_{x_{abort}}` 更快地被广播. 因为以太坊出块的速度是相对稳定的, 这样子的话更容易实现中断. (但实际中默认是最大连接25个节点, 中断的成功率可能没实验中的效果这么好)
+- 可以模仿作者的思路在更多的网络上进行测试, 或者制定一个标准, 对比不同链的性能.
 
-- 可以模仿作者的思路在更多的网络上进行测试, 或者制定一个标准来评估不同网络的性能.
+- 实验中作者修改了最大连接的节点数为500(默认是25), 因此在实验时大都能连接到400个节点. 这在中断机制的实验中为作者的节点提供了有利的条件, 使得 :math:`T_{x_{abort}}` 更快地被广播. 因为以太坊出块的速度是相对稳定的, 这样子的话更容易实现中断. (但实际中默认是最大连接25个节点, 中断的成功率可能没实验中的效果这么好)
 
 
 .. _Personal Recommendation Using Deep Recurrent Neural Networks in NetEase:
