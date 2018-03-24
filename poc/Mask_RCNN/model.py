@@ -67,6 +67,21 @@ class BatchNorm(KL.BatchNormalization):
     def call(self, inputs, training=None):
         return super(self.__class__, self).call(inputs, training=False)
 
+def GroupNorm(x, gamma, beta, G, eps=1e-5):
+    # x: input features with shape [N,C,H,W]
+    # gamma, beta: scale and offset, with shape [1,C,1,1]
+    # G: number of groups for GN
+
+    N, C, H, W = x.shape
+    x = tf.reshape(x, [N, G, C // G, H, W])
+
+    mean, var = tf.nn.moments(x, [2, 3, 4], keepdims=True)
+    x = (x - mean) / tf.sqrt(var + eps)
+
+    x = tf.reshape(x, [N, C, H, W])
+
+    return X * gamme + beta
+
 
 ############################################################
 #  Resnet Graph
@@ -152,7 +167,7 @@ def resnet_graph(input_image, architecture, stage5=False):
     # Stage 1
     x = KL.ZeroPadding2D((3, 3))(input_image)
     x = KL.Conv2D(64, (7, 7), strides=(2, 2), name='conv1', use_bias=True)(x)
-    x = BatchNorm(axis=3, name='bn_conv1')(x)
+    # x = BatchNorm(axis=3, name='bn_conv1')(x)
     x = KL.Activation('relu')(x)
     C1 = x = KL.MaxPooling2D((3, 3), strides=(2, 2), padding="same")(x)
     # Stage 2
