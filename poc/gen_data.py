@@ -6,9 +6,9 @@ import numpy as np
 def data_augmentation(input_image, masks,
                       h_flip=True,
                       v_flip=True,
-                      rotation=360,
-                      zoom=1.5,
-                      brightness=0.5,
+                      rotation=90, # 360
+                      zoom=1.2, # 1.5
+                      brightness=0, # 0.5
                       crop=False):
     # first is input all other are output
     # Data augmentation
