@@ -61,7 +61,7 @@ class ShapesConfig(Config):
     MINI_MASK_SHAPE = (56, 56)  # (height, width) of the mini-mask
 
     # You can reduce this during training to generate more propsals.
-    RPN_NMS_THRESHOLD = 0.5 # 0.7
+    RPN_NMS_THRESHOLD = 0.7 # 0.7
 
     # How many anchors per image to use for RPN training
     RPN_TRAIN_ANCHORS_PER_IMAGE = 320   # 256
@@ -88,7 +88,7 @@ class ShapesConfig(Config):
     TRAIN_ROIS_PER_IMAGE = 512  # 32
 
     # Use a small epoch since the data is simple
-    STEPS_PER_EPOCH = 500   # 300/100
+    STEPS_PER_EPOCH = 1000   # 300/100
 
     # use small validation steps since the epoch is small
     VALIDATION_STEPS = 70   # 5
@@ -268,6 +268,11 @@ if TRAINING:
                 epochs=8,
                 layers="all")
     # epochs 2
+
+    model.train(dataset_train, dataset_val,
+                learning_rate=config.LEARNING_RATE / 20,
+                epochs=2,
+                layers="all")
 
 
     # Save weights
