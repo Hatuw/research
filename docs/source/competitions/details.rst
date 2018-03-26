@@ -21,3 +21,62 @@ Mixed
 
 - 貌似生物领域的话是挂到bioRxiv(preprint).
 
+
+HyperPara
+>>>>>>>>>>>>>>>>>>>
+
+- 目前用以下设置跑出来的结果最好, Kaggle 排名469左右(`shapes20180314T1748`).
+
+- 训练集的Mean RGB为 ``MEAN_PIXEL = np.array([44.5, 40.7, 48.6])``
+
+.. code::
+
+    class ShapesConfig(Config):
+        GPU_COUNT = 1
+        IMAGES_PER_GPU = 2
+        NUM_CLASSES = 1 + 1
+        IMAGE_MIN_DIM = 512
+        IMAGE_MAX_DIM = 512
+        USE_MINI_MASK = True
+        MINI_MASK_SHAPE = (56, 56)
+        RPN_NMS_THRESHOLD = 0.5
+        RPN_TRAIN_ANCHORS_PER_IMAGE = 320   # 256
+        POST_NMS_ROIS_TRAINING = 2000
+        POST_NMS_ROIS_INFERENCE = 2000
+        MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
+        MAX_GT_INSTANCES = 256
+        DETECTION_MAX_INSTANCES = 400
+        RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)
+        TRAIN_ROIS_PER_IMAGE = 512
+        STEPS_PER_EPOCH = 300
+        VALIDATION_STEPS = 70
+    # Training mAP: 0.9714530196558473
+    # Validating mAP: 0.960999267232544
+    # LB: 0.355
+
+.. code::
+
+    class ShapesConfig(Config):
+        GPU_COUNT = 1
+        IMAGES_PER_GPU = 2
+        NUM_CLASSES = 1 + 1
+        IMAGE_MIN_DIM = 512
+        IMAGE_MAX_DIM = 512
+        USE_MINI_MASK = True
+        MINI_MASK_SHAPE = (56, 56)
+        RPN_NMS_THRESHOLD = 0.7
+        RPN_TRAIN_ANCHORS_PER_IMAGE = 320   # 256
+        POST_NMS_ROIS_TRAINING = 2000
+        POST_NMS_ROIS_INFERENCE = 2000
+        MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
+        MAX_GT_INSTANCES = 256
+        DETECTION_MAX_INSTANCES = 400
+        RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)
+        TRAIN_ROIS_PER_IMAGE = 512
+        STEPS_PER_EPOCH = 1000
+        VALIDATION_STEPS = 70
+    # 最后增加了所有层的训练, LEARNING_RATE/20=0.5*10^(-5), epoches=2
+    # Training mAP: 1.0
+    # Validating mAP: 0.9386724366082086
+    # LB: 0.381
+

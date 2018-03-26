@@ -97,6 +97,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#related-work">Related Work</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mixed">Mixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hyperpara">HyperPara</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reading/index.html">Reading Notes</a></li>
@@ -193,6 +194,62 @@
 <ul class="simple">
 <li>貌似生物领域的话是挂到bioRxiv(preprint).</li>
 </ul>
+</div>
+<div class="section" id="hyperpara">
+<h2>HyperPara<a class="headerlink" href="#hyperpara" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li>目前用以下设置跑出来的结果最好, Kaggle 排名469左右(<cite>shapes20180314T1748</cite>).</li>
+<li>训练集的Mean RGB为 <code class="docutils literal notranslate"><span class="pre">MEAN_PIXEL</span> <span class="pre">=</span> <span class="pre">np.array([44.5,</span> <span class="pre">40.7,</span> <span class="pre">48.6])</span></code></li>
+</ul>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ShapesConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">GPU_COUNT</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">IMAGES_PER_GPU</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">NUM_CLASSES</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">IMAGE_MIN_DIM</span> <span class="o">=</span> <span class="mi">512</span>
+    <span class="n">IMAGE_MAX_DIM</span> <span class="o">=</span> <span class="mi">512</span>
+    <span class="n">USE_MINI_MASK</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">MINI_MASK_SHAPE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">56</span><span class="p">,</span> <span class="mi">56</span><span class="p">)</span>
+    <span class="n">RPN_NMS_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">RPN_TRAIN_ANCHORS_PER_IMAGE</span> <span class="o">=</span> <span class="mi">320</span>   <span class="c1"># 256</span>
+    <span class="n">POST_NMS_ROIS_TRAINING</span> <span class="o">=</span> <span class="mi">2000</span>
+    <span class="n">POST_NMS_ROIS_INFERENCE</span> <span class="o">=</span> <span class="mi">2000</span>
+    <span class="n">MEAN_PIXEL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">44.5</span><span class="p">,</span> <span class="mf">40.7</span><span class="p">,</span> <span class="mf">48.6</span><span class="p">])</span>
+    <span class="n">MAX_GT_INSTANCES</span> <span class="o">=</span> <span class="mi">256</span>
+    <span class="n">DETECTION_MAX_INSTANCES</span> <span class="o">=</span> <span class="mi">400</span>
+    <span class="n">RPN_ANCHOR_SCALES</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+    <span class="n">TRAIN_ROIS_PER_IMAGE</span> <span class="o">=</span> <span class="mi">512</span>
+    <span class="n">STEPS_PER_EPOCH</span> <span class="o">=</span> <span class="mi">300</span>
+    <span class="n">VALIDATION_STEPS</span> <span class="o">=</span> <span class="mi">70</span>
+<span class="c1"># Training mAP: 0.9714530196558473</span>
+<span class="c1"># Validating mAP: 0.960999267232544</span>
+<span class="c1"># LB: 0.355</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ShapesConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">GPU_COUNT</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">IMAGES_PER_GPU</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">NUM_CLASSES</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">IMAGE_MIN_DIM</span> <span class="o">=</span> <span class="mi">512</span>
+    <span class="n">IMAGE_MAX_DIM</span> <span class="o">=</span> <span class="mi">512</span>
+    <span class="n">USE_MINI_MASK</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">MINI_MASK_SHAPE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">56</span><span class="p">,</span> <span class="mi">56</span><span class="p">)</span>
+    <span class="n">RPN_NMS_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.7</span>
+    <span class="n">RPN_TRAIN_ANCHORS_PER_IMAGE</span> <span class="o">=</span> <span class="mi">320</span>   <span class="c1"># 256</span>
+    <span class="n">POST_NMS_ROIS_TRAINING</span> <span class="o">=</span> <span class="mi">2000</span>
+    <span class="n">POST_NMS_ROIS_INFERENCE</span> <span class="o">=</span> <span class="mi">2000</span>
+    <span class="n">MEAN_PIXEL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">44.5</span><span class="p">,</span> <span class="mf">40.7</span><span class="p">,</span> <span class="mf">48.6</span><span class="p">])</span>
+    <span class="n">MAX_GT_INSTANCES</span> <span class="o">=</span> <span class="mi">256</span>
+    <span class="n">DETECTION_MAX_INSTANCES</span> <span class="o">=</span> <span class="mi">400</span>
+    <span class="n">RPN_ANCHOR_SCALES</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+    <span class="n">TRAIN_ROIS_PER_IMAGE</span> <span class="o">=</span> <span class="mi">512</span>
+    <span class="n">STEPS_PER_EPOCH</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">VALIDATION_STEPS</span> <span class="o">=</span> <span class="mi">70</span>
+<span class="c1"># 最后增加了所有层的训练, LEARNING_RATE/20=0.5*10^(-5), epoches=2</span>
+<span class="c1"># Training mAP: 1.0</span>
+<span class="c1"># Validating mAP: 0.9386724366082086</span>
+<span class="c1"># LB: 0.381</span>
+</pre></div>
+</div>
 </div>
 </div>
 
