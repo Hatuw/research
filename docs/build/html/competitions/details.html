@@ -197,11 +197,23 @@
 </div>
 <div class="section" id="hyperpara">
 <h2>HyperPara<a class="headerlink" href="#hyperpara" title="永久链接至标题">¶</a></h2>
-<ul class="simple">
-<li>目前用以下设置跑出来的结果最好, Kaggle 排名469左右(<cite>shapes20180314T1748</cite>).</li>
-<li>训练集的Mean RGB为 <code class="docutils literal notranslate"><span class="pre">MEAN_PIXEL</span> <span class="pre">=</span> <span class="pre">np.array([44.5,</span> <span class="pre">40.7,</span> <span class="pre">48.6])</span></code></li>
-</ul>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ShapesConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+<ul>
+<li><p class="first">训练集的Mean RGB为 <code class="docutils literal notranslate"><span class="pre">MEAN_PIXEL</span> <span class="pre">=</span> <span class="pre">np.array([44.5,</span> <span class="pre">40.7,</span> <span class="pre">48.6])</span></code></p>
+</li>
+<li><p class="first">当输入为512*512时, resnet_graph对应的C1-C5大小为:</p>
+<blockquote>
+<div><div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>C1 = (?, 128, 128, 64)
+C2 = (?, 128, 128, 256)
+C3 = (?, 64, 64, 512)
+C4 = (?, 32, 32, 1024)
+C5 = (?, 16, 16, 2048)
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">两次实验结果相对来说比较好的参数:</p>
+<blockquote>
+<div><div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ShapesConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
     <span class="n">GPU_COUNT</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">IMAGES_PER_GPU</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">NUM_CLASSES</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span>
@@ -223,6 +235,7 @@
 <span class="c1"># Training mAP: 0.9714530196558473</span>
 <span class="c1"># Validating mAP: 0.960999267232544</span>
 <span class="c1"># LB: 0.355</span>
+<span class="c1"># `shapes20180314T1748`</span>
 </pre></div>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ShapesConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
@@ -248,8 +261,12 @@
 <span class="c1"># Training mAP: 1.0</span>
 <span class="c1"># Validating mAP: 0.9386724366082086</span>
 <span class="c1"># LB: 0.381</span>
+<span class="c1"># `shapes20180325T2211`</span>
 </pre></div>
 </div>
+</div></blockquote>
+</li>
+</ul>
 </div>
 </div>
 
