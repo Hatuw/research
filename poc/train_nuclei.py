@@ -46,7 +46,7 @@ class ShapesConfig(Config):
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 2  # 8
+    IMAGES_PER_GPU = 3  # 8
 
     # Number of classes (including background)
     # NUM_CLASSES = 1 + 3  # background + 3 shapes
@@ -257,6 +257,10 @@ if TRAINING:
                 layers='heads')
     # epochs 1
 
+    model.train(dataset_train, dataset_val,
+                learning_rate=config.LEARNING_RATE,
+                epochs=2,
+                layers='4+')
 
     # Fine tune all layers
     # Passing layers="all" trains all layers. You can also
@@ -271,7 +275,7 @@ if TRAINING:
 
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE / 20,
-                epochs=2,
+                epochs=4,
                 layers="all")
 
 
