@@ -48,7 +48,7 @@ class ShapesConfig(Config):
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 4  # 8
+    IMAGES_PER_GPU = 3  # 8
 
     # Number of classes (including background)
     # NUM_CLASSES = 1 + 3  # background + 3 shapes
@@ -87,6 +87,7 @@ class InferenceConfig(ShapesConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
     USE_MINI_MASK = False
+    # MEAN_PIXEL = np.array([44.5, 40.7, 48.6])
     # MINI_MASK_SHAPE = (1, 1)
 
 config = InferenceConfig()

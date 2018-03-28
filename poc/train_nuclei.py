@@ -61,7 +61,7 @@ class ShapesConfig(Config):
     MINI_MASK_SHAPE = (56, 56)  # (height, width) of the mini-mask
 
     # You can reduce this during training to generate more propsals.
-    RPN_NMS_THRESHOLD = 0.7 # 0.7
+    RPN_NMS_THRESHOLD = 0.8 # 0.7
 
     # How many anchors per image to use for RPN training
     RPN_TRAIN_ANCHORS_PER_IMAGE = 320   # 256
