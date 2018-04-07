@@ -15,6 +15,7 @@ Research Notes
    competitions/details
    reading/index
    blockchain/index
+   blockchain/competition
    cryptology/index
    bmvc2018/index
    icassp2018/index
