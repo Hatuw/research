@@ -49,6 +49,7 @@ Ethereum
 	936c87067e6e3a614499ffc54c7b65324ad7c869
 	990fcbc3767bd6dd80bc8076101ea21d73136678
 	fcf485e29c8364f82cea554021e3fa2771d7466d
+
 启动
 >>>>
 
@@ -60,6 +61,16 @@ Ethereum
 
 
 如果需要挖矿的话可以在后面加上 ``--mine``
+
+issues
+>>>>>>
+
+- When using ansible and geth to deploy the Ethereum. It can not run in background.
+
+- The node will connect to the node on ip: `172.18.196.2` first, but it will not connect others nodes after initial. That is to say, the network will turn down if the node in `172.18.196.2` been shutdowned down.
+
+- The Hyperbench project is used to test the performance in a private chain. It test on geth(Ethereum, Party) and Hyperledger Fabric.
+
 
 Hyperledger
 -----------
