@@ -82,3 +82,4 @@ Hyperledger
 Reference
 ---------
 [1] Ansible文档： http://www.ansible.com.cn/docs/
+0xdb8086002d43605b7118a3069818bce5212dc60d

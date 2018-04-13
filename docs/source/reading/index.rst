@@ -4,11 +4,20 @@ Reading Notes
 Paper List
 -------------------
 
-- :ref:`Efficient Estimation of Word Representations in Vector Space` (NLP)
+- NLP
 
-- :ref:`On Availability for Blockchain-Based Systems` (区块链)
+    - :ref:`Efficient Estimation of Word Representations in Vector Space`
 
-- :ref:`Personal Recommendation Using Deep Recurrent Neural Networks in NetEase` (推荐系统)
+- Blockchain
+
+    - :ref:`On Availability for Blockchain-Based Systems`
+    - :ref:`A Byzantine Fault-Tolerant Ordering Service for the Hyperledger Fabric Blockchain Platform`
+    - :ref:`Hyperledger Fabric: A Distributed Operating System for Permissioned Blockchains`
+    - :ref:`Analyzing Performance in Blockchain-Based Systems`
+
+- Recommendation System
+
+    - :ref:`Personal Recommendation Using Deep Recurrent Neural Networks in NetEase`
 
 
 .. _Efficient Estimation of Word Representations in Vector Space:
@@ -109,6 +118,29 @@ On Availability for Blockchain-Based Systems
 - 可以模仿作者的思路在更多的网络上进行测试, 或者制定一个标准, 对比不同链的性能.
 
 - 实验中作者修改了最大连接的节点数为500(默认是25), 因此在实验时大都能连接到400个节点. 这在中断机制的实验中为作者的节点提供了有利的条件, 使得 :math:`T_{x_{abort}}` 更快地被广播. 因为以太坊出块的速度是相对稳定的, 这样子的话更容易实现中断. (但实际中默认是最大连接25个节点, 中断的成功率可能没实验中的效果这么好)
+
+
+.. _A Byzantine Fault-Tolerant Ordering Service for the Hyperledger Fabric Blockchain Platform:
+
+A Byzantine Fault-Tolerant Ordering Service for the Hyperledger Fabric Blockchain Platform
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+nothing here =.=
+
+.. _Hyperledger Fabric\: A Distributed Operating System for Permissioned Blockchains:
+
+Hyperledger Fabric: A Distributed Operating System for Permissioned Blockchains
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+nothing here =.=
+
+
+.. _Analyzing Performance in Blockchain-Based Systems:
+
+Analyzing Performance in Blockchain-Based Systems
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+nothing here =.=
 
 
 .. _Personal Recommendation Using Deep Recurrent Neural Networks in NetEase:
