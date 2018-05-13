@@ -14,6 +14,7 @@ Paper List
     - :ref:`A Byzantine Fault-Tolerant Ordering Service for the Hyperledger Fabric Blockchain Platform`
     - :ref:`Hyperledger Fabric: A Distributed Operating System for Permissioned Blockchains`
     - :ref:`Analyzing Performance in Blockchain-Based Systems`
+    - :ref:`Simple Proofs of Sequential Work`
 
 - Recommendation System
 
@@ -141,6 +142,16 @@ Analyzing Performance in Blockchain-Based Systems
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 nothing here =.=
+
+.. _Simple Proofs of Sequential Work:
+
+Simple Proofs of Sequential Work
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+EUROCRYPT 2018 best paper
+
+内容简介：试图通过「空间证明」（Proof of Space）来保证比特币及其他加密货币的安全。「空间证明」是Bram Cohen之前提出的一种取代PoW的工作证明方式。
+
 
 
 .. _Personal Recommendation Using Deep Recurrent Neural Networks in NetEase:
