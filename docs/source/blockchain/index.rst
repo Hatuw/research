@@ -79,6 +79,17 @@ Hyperledger
 
 *Figure 1. hyperledger transaction flow*
 
+Hyperledger 源码分析
+>>>>>>>>>>>>>>>>>>>>>>
+
+- 使用go-callvis对hyperledger中的orderer和peer的源码进行分析
+
+.. code-block:: bash
+
+	go-callvis -focus "" -limit "github.com/hyperledger/fabric/orderer,github.com/hyperledger/fabric/common" ./orderer > ~/orderer.dot
+	go-callvis -focus "" -limit "github.com/hyperledger/fabric/peer,github.com/hyperledger/fabric/common" ./peer > ~/peer.dot
+
+
 MISC
 -----------
 
