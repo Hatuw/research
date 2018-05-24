@@ -152,6 +152,8 @@ EUROCRYPT 2018 best paper
 
 内容简介：试图通过「空间证明」（Proof of Space）来保证比特币及其他加密货币的安全。「空间证明」是Bram Cohen之前提出的一种取代PoW的工作证明方式。
 
+作者基于 Mohammad Mahmoody等人提出的 PoSW基础上，将空间复杂度降为log(N)
+
 **PoSW** 定义
 
 |PoSW|
