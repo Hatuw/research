@@ -15,6 +15,7 @@ Paper List
     - :ref:`Hyperledger Fabric: A Distributed Operating System for Permissioned Blockchains`
     - :ref:`Analyzing Performance in Blockchain-Based Systems`
     - :ref:`Simple Proofs of Sequential Work`
+    - :ref:`Blockchain and Trusted Computing`
 
 - Recommendation System
 
@@ -168,6 +169,15 @@ EUROCRYPT 2018 best paper
 4) Opening Challenge
 5) Open
 6) Verify
+
+.. _Blockchain and Trusted Computing:
+
+Blockchain and Trusted Computing
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+*Blockchain and Trusted Computing: Problems, Pitfalls, and a Solution for Hyperledger Fabric*
+
+本文介绍了区块链在可信计算中的应用，以及使用Hyperledger Fabric用于可信计算的一个解决方案
 
 
 .. _Personal Recommendation Using Deep Recurrent Neural Networks in NetEase:
