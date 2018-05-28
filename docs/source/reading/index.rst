@@ -177,7 +177,10 @@ Blockchain and Trusted Computing
 
 *Blockchain and Trusted Computing: Problems, Pitfalls, and a Solution for Hyperledger Fabric*
 
-本文介绍了区块链在可信计算中的应用，以及使用Hyperledger Fabric用于可信计算的一个解决方案
+本文提出了 Hyperledger Fabric + Intel SGX 来进行可信计算（执行Chaincode）的一种方案。
+
+在Hyperledger Fabric当中，背书节点模拟执行事务后，结果可能带有敏感信息，因此需要保密。
+为了防止信息泄露，每个节点有SGX-enable CPU 并且用它来执行事务。
 
 
 .. _Personal Recommendation Using Deep Recurrent Neural Networks in NetEase:
