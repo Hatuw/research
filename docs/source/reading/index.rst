@@ -16,6 +16,7 @@ Paper List
     - :ref:`Analyzing Performance in Blockchain-Based Systems`
     - :ref:`Simple Proofs of Sequential Work`
     - :ref:`Blockchain and Trusted Computing`
+    - :ref:`Performance Benchmarking and Optimizing Hyperledger Fabric Blockchain Platform`
 
 - Recommendation System
 
@@ -181,6 +182,18 @@ Blockchain and Trusted Computing
 
 在Hyperledger Fabric当中，背书节点模拟执行事务后，结果可能带有敏感信息，因此需要保密。
 为了防止信息泄露，每个节点有SGX-enable CPU 并且用它来执行事务。
+
+
+.. _Performance Benchmarking and Optimizing Hyperledger Fabric Blockchain Platform:
+
+Performance Benchmarking and Optimizing Hyperledger Fabric Blockchain Platform
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+ibm research 做的一个工作，通过在源码级别上对 Hyperledger Fabric 进行分析，在三个方面进行了优化
+
+- 对 endorsement 中的加密部分进行了缓存优化( :math:`\times 3` )
+- 背书进行并行优化( :math:`\times 7` )
+- 对状态数据库进行了优化 ( :math:`\times 2.5` )
 
 
 .. _Personal Recommendation Using Deep Recurrent Neural Networks in NetEase:
